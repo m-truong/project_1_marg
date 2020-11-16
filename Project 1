@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-11-16T17:01:42.035Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36" etag="OV1eGe8qshDtAwMIN-BI" version="13.9.9" type="github">
+<mxfile host="app.diagrams.net" modified="2020-11-16T20:53:12.524Z" agent="5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36" etag="f4xa226JZyWEJ3z7tap0" version="13.9.9" type="github">
   <diagram id="69rHCHsD__bsn1twCjg0" name="Page-1">
-    <mxGraphModel dx="1650" dy="2215" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1610" dy="2261" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -16,7 +16,7 @@
         <mxCell id="eAa9gs5C7OZeya8OlB0v-8" value="Brose Books" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="490" y="90" width="120" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="eAa9gs5C7OZeya8OlB0v-9" value="becom a member&lt;br&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="eAa9gs5C7OZeya8OlB0v-9" value="become&amp;nbsp;a member" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="490" y="-10" width="120" height="80" as="geometry" />
         </mxCell>
         <mxCell id="eAa9gs5C7OZeya8OlB0v-10" value="Read Books&lt;br&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -84,7 +84,7 @@
         </mxCell>
         <mxCell id="eAa9gs5C7OZeya8OlB0v-22" value="" style="endArrow=none;html=1;" edge="1" parent="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
-            <mxPoint x="65" y="450" as="sourcePoint" />
+            <mxPoint x="80" y="440" as="sourcePoint" />
             <mxPoint x="475" y="520" as="targetPoint" />
             <Array as="points" />
           </mxGeometry>
