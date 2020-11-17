@@ -1,0 +1,59 @@
+body {
+    background: #444 url("duelistisland.jpg") fixed center no-repeat;
+    background-size: cover;
+    font-family: 'Fondamento', cursive;
+    /* font-family: 'Baloo Chettan 2', cursive; */
+}
+
+
+div.flex-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.jumbotron {
+    width: 75%;
+    max-width: 700px;
+
+    /* Position into the Middle */
+    position: fixed;
+    top: 45%;
+    transform: translateY(-45%);
+
+    display: block;
+
+    background-color: rgb(243, 187, 66);
+    box-shadow: 0 4px 8px rgb(26, 31, 39);
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* Duelist Carousel */
+div.duelistCarousel {
+    display: none;
+}
+div.duelistCarousel.open{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    
+    background-color:  rgb(243, 187, 66);
+    padding: 30px;
+
+    width: 50vw;
+    max-width: 500px;
+    text-align: center;
+    border-radius: 5px;
+
+    position: fixed;
+    top: 45%;
+    transform: translateY(-45%);
+
+}
+div.duelistCarousel img {
+
+    width: 50%;
+    height: 50%;
+}
