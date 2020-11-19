@@ -27,8 +27,8 @@ GLOBAL VARS
 // ======= Array of Monster Card Objects ======= // 
 const monsterList = []
 
-const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
-setTimeout(() => {mainTheme.play()}, 500);
+// const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
+// setTimeout(() => {mainTheme.play()}, 500);
 
 /* =============================
 MAIN FUNCTIONS FOR then() 
@@ -70,6 +70,13 @@ class GameState {
         this.iterable = 0;
         this.player = new Player();
         this.computer = new Player();
+
+        // Gave Function to the button, so "this" refers to the button, NOT the class-object instance 
+        // Always going to refer to "this" instance of object // only for refering to property of "this" object
+        // if invoking with an "event-listener", then use bind() when inside async function
+        this.singleBattlePhase = this.singleBattlePhase.bind(this);
+        this.initialTurn = this.initialTurn.bind(this);
+        // bind just in case 
     }
     // ================= Appending monsterCard to the page =========================== // 
     displayMonsterCard(card, node) {
@@ -80,53 +87,43 @@ class GameState {
         return array[Math.floor(Math.random() * array.length)];
     }
     // ======= Updates HTML to Display Life Points ============= //
-    updateLifePoints(player, node) {
+    updateLifePoints(player, node, num) {
         node.html(`
         <div class="col card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">${player.lifePoints}</h5>
-                <a href="#" class="drawBtn btn btn-secondary">Draw</a>
-                <a href="#" class="atkBtn btn btn-success">Attack</a>
+                <a href="#" class="drawBtn${num} btn btn-secondary">Draw</a>
+                <a href="#" class="atkBtn${num} btn btn-success">Attack</a>
             </div>
         </div>
         `);
+        console.log(node);
     }
     initialTurn() {
-        this.player.monsterCard = this.getRandMonstCard(monsterList);
+        this.player.monsterCard = this.getRandMonstCard(monsterList); 
         this.computer.monsterCard = this.getRandMonstCard(monsterList);
-        // console.logs here
-        console.log(this.player.monsterCard.atk);
-        console.log(this.computer.monsterCard.atk);
-        //  works here 
+
         this.displayMonsterCard(this.player.monsterCard, $playerMonsterCard);
         this.displayMonsterCard(this.computer.monsterCard, $computerMonsterCard);
-        this.updateLifePoints(this.player, $playerLifePoints);
-        this.updateLifePoints(this.computer, $computerLifePoints);
+        this.updateLifePoints(this.player, $playerLifePoints, 1);
+        this.updateLifePoints(this.computer, $computerLifePoints, 2);
     }
     sentToGraveyardDrawNewCard(player, node) {
         player.monsterCard = this.getRandMonstCard(monsterList);
         this.displayMonsterCard(player.monsterCard, node)
-        // debugging
-        // console.log(player.monsterCard);
     }
 
-    // this turn happens instantaneously 
-    // add setTimeout() and alert() to slow pace of battle
-
-    // going to have "MODULARIZE" this to pass in SEPARATE "player" depending on WHICH PLAYER calls this method
-    singleBattlePhase() {
-
+    singleBattlePhase(evt) {
+        evt.preventDefault();
         console.log("Single battle-phase has occurred!");
-        // console.log(this.player.monsterCard.atk);
-        // Uncaught TypeError ??? 
+
         if (this.player.monsterCard.atk > this.computer.monsterCard.atk) {
 
-            // place alerts before every step 
-            alert(`You are initiating your attack phase against the opponent's Monster Card!`);
+            alert(`After initiating the Attack Phase, Player 1's Monster Card's Attack Points are greater than Player 2's Monster Card's Attack Points!`)
 
             this.computer.lifePoints -= (this.player.monsterCard.atk - this.computer.monsterCard.atk)
 
-            alert(`The attack did ${(this.player.monsterCard.atk - this.computer.monsterCard.atk)} to your opponent's Life Points!`);
+            alert(`The attack did ${(this.player.monsterCard.atk - this.computer.monsterCard.atk)} damage to Player 2's Life Points!`);
 
             this.updateLifePoints(this.computer, $computerLifePoints);
 
@@ -135,12 +132,11 @@ class GameState {
             this.sentToGraveyardDrawNewCard(this.computer, $computerMonsterCard)
 
         } else if (this.player.monsterCard.atk < this.computer.monsterCard.atk) {
-
-            alert(`The opponent has initiated their attack phase against your Monster Card!`);
+            alert(`After initiating the Attack Phase, Player 2's Monster Card's Attack Points are greater than Player 1's Monster Card's Attack Points!`)
 
             this.player.lifePoints -= (this.computer.monsterCard.atk - this.player.monsterCard.atk)
 
-            alert(`The attack did ${(this.computer.monsterCard.atk - this.player.monsterCard.atk)} to your Life Points!`);
+            alert(`The attack did ${(this.computer.monsterCard.atk - this.player.monsterCard.atk)} damage to Player 1's Life Points!`);
 
             this.updateLifePoints(this.player, $playerLifePoints);
 
@@ -149,7 +145,7 @@ class GameState {
             this.sentToGraveyardDrawNewCard(this.player, $playerMonsterCard);
 
         } else if (this.player.monsterCard.atk === this.computer.monsterCard.atk) {
-
+            alert(`No damage was done to either players' Life Points, but both players' Monster Cards are sent to the Graveyard!`);
             // alert (`Both ${this.player.monsterCard.name} and ${this.computer.monsterCard.name} have been sent to the Graveyard!`);
 
             alert(`${this.computer.monsterCard.name} has been sent to the Graveyard!`);
@@ -157,20 +153,21 @@ class GameState {
 
             alert(`${this.player.monsterCard.name} has been sent to the Graveyard!`);
             this.sentToGraveyardDrawNewCard(this.player, $playerMonsterCard);
-            
+
+
         }
 
         this.checkWinState();
     }
-    checkWinState() {
+    checkWinState() { // you do have negative numbers in YuGiOh
         if (this.player.lifePoints > 0 && this.computer.lifePoints <= 0) {
-            alert("You have won!");
+            alert("Player 1 has won! Thank you for playing!");
             location.reload();
-            this.state = false;
+            // this.state = false;
         } else if (this.player.lifePoints <= 0 && this.computer.lifePoints > 0) {
-            alert("The computer has won!");
+            alert("Player 2 has won! Thank you for playing!");
             location.reload();
-            this.state = false;
+            // this.state = false;
         }
     }
 }
@@ -194,11 +191,13 @@ const yugioh = async () => {
     }
 }
 
-// ========== GAME STARTS HERE ============= //
+// ========== GAME ENTRYPOINT STARTS HERE ============= //
 yugioh().then(
+
     () => {
         console.log('Execute all JavaScript inside this .then() method');
         console.log('inside', cardData);
+
         cardData.forEach((currMonstCard) => {
             const monsterCardObj = {
                 name: currMonstCard.name,
@@ -210,18 +209,26 @@ yugioh().then(
             }
             monsterList.push(monsterCardObj);
         })
-        // renders initialTurn()
-        game1.initialTurn();
-        console.log(game1.player.monsterCard.atk);
-        // game1.singleBattlePhase();
+        game1.initialTurn(monsterList);
 
         // ====== Need to get DOM Node only after .initialTurn() changes .html to have atkBtn ====== //
         // ====== also get's BOTH attack buttons ====== // 
-        const $atkBtn = $('.atkBtn')
+        const $atkBtn1 = $('.atkBtn1')
+        console.log($atkBtn1);
+
+        const $atkBtn2 = $('.atkBtn2')
+        console.log($atkBtn2);
+        // try .eq()method
 
         // ====== add's click to BOTH attack buttons ===== // 
-        // this still doesn't work
-        $atkBtn.click(game1.singleBattlePhase);
-        // $atkBtn.on("click", game1.singleBattlePhase);
+
+        $atkBtn1.click(game1.singleBattlePhase)
+        
+        $atkBtn2.click(game1.singleBattlePhase)
+
+
+        // Targeting Separate Cards! 
+        // target properly the card itself 
+        // add event listener, function going to use has a PARAMETER that accepts WHICH card pointing AT 
     }
 );

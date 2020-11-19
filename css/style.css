@@ -20,14 +20,19 @@ div.jumbotron {
     max-width: 700px;
 
     text-align: center;
-    
+
     position: fixed;
-    top: 45%;
-    transform: translateY(-45%);
+    /* previously 45% */
+    top: 15%; 
+    /* transform: translateY(-45%); */
     display: block;
     background-color: rgb(243, 187, 66);
     box-shadow: 0 4px 8px rgb(26, 31, 39);
     transition: all 0.3s ease-in-out;
+
+    /* animation doesn't work properly */
+    animation: slideInDown;
+    animation-duration: 2s;
 }
 
 /* Duelist Carousel */
