@@ -28,10 +28,27 @@
     <div class="flex-container">
         <div class="intro jumbotron">
             <h1 class="display-4">Welcome to Duelist Kingdom!</h1>
-            <p class="lead">Maximillion Pegasus has invited you to compete against Japan's strongest 'Duelists' for the
-                title of "King of Games" here on this island!</p>
             <hr class="my-4">
-            <p>If you think you're strong enough, then click "Start Game" to join the tournament!</p>
+            <!-- <p class="lead">Maximillion Pegasus has invited you to compete against Japan's strongest 'Duelists' for the
+                title of "King of Games" here on this island!</p> -->
+            <p class="lead">Yu-Gi-Oh! is a card battle game in which two players attempt to defeat each other by decreasing
+                their opponent's Life Points (down to 0) using monster cards from their deck. </p>
+            <hr class="my-4">
+            <h3>How To Play:</h3>
+            <p>You are given a random monster card at the start of every turn. You can choose to attack the opponent's
+                monster card on the field when it is in the Attack Position. Here's how damage to a player's Life Points
+                is calculated for Attack vs Attack:
+                <ul>
+                    <li> When your monster's ATK value is higher than the opponent's ATK value, the opponent's monster
+                        is sent to
+                        the Graveyard and the amount of excess ATK value is subtracted from the opponent's Life Points.
+                    </li>
+                    <li> When your monster's ATK value is lower than the opponent's ATK value, your monster is sent to
+                        the
+                        Graveyard and the amount of excess ATK value is subtracted from your Life Points.</li>
+                    <li> When both monsters' ATK value is even, both monsters are sent to the Graveyard.</li>
+                </ul>
+            </p>
             <a class="duelBtn btn btn-success btn-lg" href="#" role="button">Let's Duel!</a>
         </div>
     </div>
@@ -91,11 +108,11 @@
                 <!-- .html changes here -->
             </div>
             <!-- Player Monster Card -->
-            <div id="" class="playerMonsterCard monsterCard col"> 
+            <div id="" class="playerMonsterCard col">
                 <!-- .html changes here -->
             </div>
             <!-- Computer Monster Card -->
-            <div id="" class="computerMonsterCard monsterCard col">
+            <div id="" class="computerMonsterCard col">
                 <!-- .html changes here -->
             </div>
             <!-- Opponent Life Points -->

@@ -18,6 +18,9 @@ div.flex-container {
 div.jumbotron {
     width: 75%;
     max-width: 700px;
+
+    text-align: center;
+    
     position: fixed;
     top: 45%;
     transform: translateY(-45%);
@@ -37,6 +40,7 @@ div.duelistCarousel.show {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+
     background-color: rgb(243, 187, 66);
     padding: 30px;
     width: 50vw;
@@ -48,10 +52,16 @@ div.duelistCarousel.show {
     left: 40%;
     transform: translateY(-45%);
 }
-
-div.duelistCarousel img {
-    width: 50%;
-    height: 50%;
+/* Fixed Height Container */
+div.carousel-item {
+    height: 350px;
+}
+/* Duelists are Resized Correctly */
+/* Replace Yugi's Image */
+div.carousel-item > img {
+    width: 100%; 
+    max-height: 100%;
+    object-fit: contain;
 }
 
 /* Monster Card Container Styling */
@@ -65,7 +75,7 @@ div.gameContainer.show {
     display: block;
 }
 
-div.monsterCard {
+div.playerMonsterCard, div.computerMonsterCard {
     display: flex;
     justify-content: center;
 }

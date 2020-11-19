@@ -8,11 +8,14 @@ const $introModal = $(".intro")
 const $duelBtn = $(".duelBtn")
 const $duelistCarousel = $(".duelistCarousel")
 const $selectDuelist = $(".selectDuelist")
+
 // ====== Game Container ====== // 
 const $gameContainer = $('.gameContainer')
+
 // ======= Monster Card Img <div> ======= //
 const $playerMonsterCard = $('.playerMonsterCard')
 const $computerMonsterCard = $('.computerMonsterCard')
+
 // ======= Life Points <div> ======= // 
 const $playerLifePoints = $('.playerLifePoints')
 const $computerLifePoints = $('.computerLifePoints')
@@ -24,8 +27,8 @@ GLOBAL VARS
 // ======= Array of Monster Card Objects ======= // 
 const monsterList = []
 
-// const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
-// setTimeout(() => {mainTheme.play()}, 500);
+const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
+setTimeout(() => {mainTheme.play()}, 500);
 
 /* =============================
 MAIN FUNCTIONS FOR then() 
@@ -109,31 +112,52 @@ class GameState {
 
     // this turn happens instantaneously 
     // add setTimeout() and alert() to slow pace of battle
+
+    // going to have "MODULARIZE" this to pass in SEPARATE "player" depending on WHICH PLAYER calls this method
     singleBattlePhase() {
 
         console.log("Single battle-phase has occurred!");
         // console.log(this.player.monsterCard.atk);
         // Uncaught TypeError ??? 
         if (this.player.monsterCard.atk > this.computer.monsterCard.atk) {
-            // alert();
+
+            // place alerts before every step 
+            alert(`You are initiating your attack phase against the opponent's Monster Card!`);
+
             this.computer.lifePoints -= (this.player.monsterCard.atk - this.computer.monsterCard.atk)
-            // alert();
+
+            alert(`The attack did ${(this.player.monsterCard.atk - this.computer.monsterCard.atk)} to your opponent's Life Points!`);
+
             this.updateLifePoints(this.computer, $computerLifePoints);
-            // alert();
+
+            alert(`${this.computer.monsterCard.name} has been sent to the Graveyard!`);
+
             this.sentToGraveyardDrawNewCard(this.computer, $computerMonsterCard)
 
         } else if (this.player.monsterCard.atk < this.computer.monsterCard.atk) {
-            // alert(); 
+
+            alert(`The opponent has initiated their attack phase against your Monster Card!`);
+
             this.player.lifePoints -= (this.computer.monsterCard.atk - this.player.monsterCard.atk)
-            // alert();
+
+            alert(`The attack did ${(this.computer.monsterCard.atk - this.player.monsterCard.atk)} to your Life Points!`);
+
             this.updateLifePoints(this.player, $playerLifePoints);
-            // alert();
+
+            alert(`${this.player.monsterCard.name} has been sent to the Graveyard!`);
+
             this.sentToGraveyardDrawNewCard(this.player, $playerMonsterCard);
 
         } else if (this.player.monsterCard.atk === this.computer.monsterCard.atk) {
-            console.log("both cards need to be sent to graveyard");
-            this.sentToGraveyardDrawNewCard(this.player, $playerMonsterCard);
+
+            // alert (`Both ${this.player.monsterCard.name} and ${this.computer.monsterCard.name} have been sent to the Graveyard!`);
+
+            alert(`${this.computer.monsterCard.name} has been sent to the Graveyard!`);
             this.sentToGraveyardDrawNewCard(this.computer, $computerMonsterCard);
+
+            alert(`${this.player.monsterCard.name} has been sent to the Graveyard!`);
+            this.sentToGraveyardDrawNewCard(this.player, $playerMonsterCard);
+            
         }
 
         this.checkWinState();
@@ -189,7 +213,7 @@ yugioh().then(
         // renders initialTurn()
         game1.initialTurn();
         console.log(game1.player.monsterCard.atk);
-        game1.singleBattlePhase();
+        // game1.singleBattlePhase();
 
         // ====== Need to get DOM Node only after .initialTurn() changes .html to have atkBtn ====== //
         // ====== also get's BOTH attack buttons ====== // 
@@ -197,7 +221,7 @@ yugioh().then(
 
         // ====== add's click to BOTH attack buttons ===== // 
         // this still doesn't work
-        // $atkBtn.click(game1.singleBattlePhase);
+        $atkBtn.click(game1.singleBattlePhase);
         // $atkBtn.on("click", game1.singleBattlePhase);
     }
 );
