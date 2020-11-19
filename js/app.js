@@ -8,20 +8,14 @@ const $introModal = $(".intro")
 const $duelBtn = $(".duelBtn")
 const $duelistCarousel = $(".duelistCarousel")
 const $selectDuelist = $(".selectDuelist")
-
 // ====== Game Container ====== // 
 const $gameContainer = $('.gameContainer')
-
 // ======= Monster Card Img <div> ======= //
 const $playerMonsterCard = $('.playerMonsterCard')
 const $computerMonsterCard = $('.computerMonsterCard')
-
 // ======= Life Points <div> ======= // 
 const $playerLifePoints = $('.playerLifePoints')
 const $computerLifePoints = $('.computerLifePoints')
-
-// ====== Atk Button Doesn't Work ====== //
-const $atkBtn = $('.atkBtn')
 
 /* ======================
 GLOBAL VARS
@@ -58,6 +52,15 @@ $selectDuelist.click(removeDuelistCarouselshowGameContainer)
 /* =============================
 CLASSES
 ============================= */
+class Player {
+    constructor() {
+        this.lifePoints = 2000;
+        this.monsterCard = null;
+    }
+}
+/**
+ * The GameState class contains two properties for the player object and computer object.
+ */
 class GameState {
     constructor() {
         this.state = true;
@@ -88,10 +91,12 @@ class GameState {
     initialTurn() {
         this.player.monsterCard = this.getRandMonstCard(monsterList);
         this.computer.monsterCard = this.getRandMonstCard(monsterList);
-
+        // console.logs here
+        console.log(this.player.monsterCard.atk);
+        console.log(this.computer.monsterCard.atk);
+        //  works here 
         this.displayMonsterCard(this.player.monsterCard, $playerMonsterCard);
         this.displayMonsterCard(this.computer.monsterCard, $computerMonsterCard);
-
         this.updateLifePoints(this.player, $playerLifePoints);
         this.updateLifePoints(this.computer, $computerLifePoints);
     }
@@ -99,13 +104,16 @@ class GameState {
         player.monsterCard = this.getRandMonstCard(monsterList);
         this.displayMonsterCard(player.monsterCard, node)
         // debugging
-        console.log(player.monsterCard);
+        // console.log(player.monsterCard);
     }
 
-    // this turn happens instantaneously // add setTimeout() and alert() to slow pace of battle
+    // this turn happens instantaneously 
+    // add setTimeout() and alert() to slow pace of battle
     singleBattlePhase() {
-        console.log("Single battle-phase has occurred!");
 
+        console.log("Single battle-phase has occurred!");
+        // console.log(this.player.monsterCard.atk);
+        // Uncaught TypeError ??? 
         if (this.player.monsterCard.atk > this.computer.monsterCard.atk) {
             // alert();
             this.computer.lifePoints -= (this.player.monsterCard.atk - this.computer.monsterCard.atk)
@@ -142,12 +150,6 @@ class GameState {
         }
     }
 }
-class Player {
-    constructor() {
-        this.lifePoints = 2000;
-        this.monsterCard = null;
-    }
-}
 
 /* =============================
 Yu-Gi-Oh API Database
@@ -155,6 +157,7 @@ Yu-Gi-Oh API Database
 // ====== Global GameState ====== //
 const game1 = new GameState()
 
+// ====== Asynchronous Fetch API ======= // 
 let cardData
 const yugioh = async () => {
     try {
@@ -162,11 +165,12 @@ const yugioh = async () => {
         const json = await data.json();
         cardData = json.data;
         return json;
-    } catch (err) {
-        console.error(err);
+    } catch (e) {
+        console.error(e);
     }
 }
-// Call starts here // 
+
+// ========== GAME STARTS HERE ============= //
 yugioh().then(
     () => {
         console.log('Execute all JavaScript inside this .then() method');
@@ -184,8 +188,16 @@ yugioh().then(
         })
         // renders initialTurn()
         game1.initialTurn();
+        console.log(game1.player.monsterCard.atk);
         game1.singleBattlePhase();
+
+        // ====== Need to get DOM Node only after .initialTurn() changes .html to have atkBtn ====== //
+        // ====== also get's BOTH attack buttons ====== // 
+        const $atkBtn = $('.atkBtn')
+
+        // ====== add's click to BOTH attack buttons ===== // 
         // this still doesn't work
+        // $atkBtn.click(game1.singleBattlePhase);
         // $atkBtn.on("click", game1.singleBattlePhase);
     }
 );
