@@ -31,7 +31,7 @@ div.jumbotron {
     transition: all 0.3s ease-in-out;
 
     /* animation doesn't work properly */
-    animation: slideInDown;
+    animation: slideInDown; 
     animation-duration: 2s;
 }
 
@@ -53,9 +53,12 @@ div.duelistCarousel.show {
     text-align: center;
     border-radius: 5px;
     position: fixed;
-    top: 45%;
+    top: 30%;
     left: 40%;
-    transform: translateY(-45%);
+    /* transform: translateY(-45%); */
+
+    animation: slideInDown; 
+    animation-duration: 2s;
 }
 /* Fixed Height Container */
 div.carousel-item {
@@ -79,8 +82,7 @@ div.gameContainer {
 div.gameContainer.show {
     display: block;
 }
-
-div.playerMonsterCard, div.computerMonsterCard {
+div.monsterCardImg {
     display: flex;
     justify-content: center;
 }
