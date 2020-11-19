@@ -3,41 +3,39 @@
 CACHED DOM NOTES
 =========================*/
 
-// Game Container
-const $gameContainer = $('.gameContainer')
-
-// <div> Monster Card Img
-const $playerMonsterCard = $('.playerMonsterCard')
-const $computerMonsterCard = $('.computerMonsterCard')
-
-// <div> Life Points
-const $playerLifePoints = $('.playerLifePoints')
-const $computerLifePoints = $('.computerLifePoints')
-
+// ====== Show/Hide Modal & Carousel ====== // 
 const $introModal = $(".intro")
 const $duelBtn = $(".duelBtn")
 const $duelistCarousel = $(".duelistCarousel")
 const $selectDuelist = $(".selectDuelist")
 
+// ====== Game Container ====== // 
+const $gameContainer = $('.gameContainer')
+
+// ======= Monster Card Img <div> ======= //
+const $playerMonsterCard = $('.playerMonsterCard')
+const $computerMonsterCard = $('.computerMonsterCard')
+
+// ======= Life Points <div> ======= // 
+const $playerLifePoints = $('.playerLifePoints')
+const $computerLifePoints = $('.computerLifePoints')
+
+// ====== Atk Button Doesn't Work ====== //
 const $atkBtn = $('.atkBtn')
 
 /* ======================
 GLOBAL VARS
 =========================*/
 
+// ======= Array of Monster Card Objects ======= // 
+const monsterList = []
+
 // const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
 // setTimeout(() => {mainTheme.play()}, 500);
-
-// Array of Monster Card Objects 
-const monsterList = []
 
 /* =============================
 MAIN FUNCTIONS FOR then() 
 ============================= */
-const randMonsCard = (array) => {
-    const randIndex = Math.floor(Math.random() * array.length);
-    return array[randIndex];
-}
 
 /* =============================
 HELPER FUNCTIONS FOR DOM-MANIPULATION
@@ -57,128 +55,105 @@ EVENT LISTENERS
 $duelBtn.click(removeIntroShowCarousel);
 $selectDuelist.click(removeDuelistCarouselshowGameContainer)
 
-
 /* =============================
 CLASSES
 ============================= */
 class GameState {
-    constructor(life) {
+    constructor() {
         this.state = true;
         this.iterable = 0;
-        this.player = new Player(life);
-        this.computer = new Player(life);
+        this.player = new Player();
+        this.computer = new Player();
     }
-
     // ================= Appending monsterCard to the page =========================== // 
     displayMonsterCard(card, node) {
-        node.html(`
-            <img src="${card.cardImg}" alt="image">
-        `);
+        node.html(`<img src="${card.cardImg}" alt="card">`);
     }
     // ======= Get Random Monster Card ======= // 
     getRandMonstCard(array) {
-        const randIndex = Math.floor(Math.random() * array.length);
-        return array[randIndex];
+        return array[Math.floor(Math.random() * array.length)];
     }
-    initialTurn() {
-        const card1 = this.getRandMonstCard(monsterList);
-        this.player.monsterCard = card1;
-
-        const card2 = this.getRandMonstCard(monsterList);
-        this.computer.monsterCard = card2;
-
-        this.displayMonsterCard(card1, $playerMonsterCard);
-        this.displayMonsterCard(card2, $computerMonsterCard);
-
-        this.updateLifePoints($playerLifePoints, this.player);
-        this.updateLifePoints($computerLifePoints, this.computer);
-    }
-
-    drawCard(player, node) {
-        // calls global randMonsCard() 
-        const newCard = this.getRandMonstCard(monsterList);
-        // reassigns .monsterCard property on the player-class! 
-        player.monsterCard = newCard;
-        // redisplays monster card on the playerNode! 
-        displayMonsterCard(newCard, node)
-        // console-log
-        console.log(player.MonsterCard);
-    }
-    sendToGraveyard() {
-
-    }
-    updateLifePoints(node, currPlayer) {
+    // ======= Updates HTML to Display Life Points ============= //
+    updateLifePoints(player, node) {
         node.html(`
         <div class="col card" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">${currPlayer.lifePoints}</h5>
+                <h5 class="card-title">${player.lifePoints}</h5>
                 <a href="#" class="drawBtn btn btn-secondary">Draw</a>
                 <a href="#" class="atkBtn btn btn-success">Attack</a>
             </div>
         </div>
         `);
     }
+    initialTurn() {
+        this.player.monsterCard = this.getRandMonstCard(monsterList);
+        this.computer.monsterCard = this.getRandMonstCard(monsterList);
 
-    checkWinState() {
-        if (this.player.lifePoints > 0 && this.computer.lifePoints <= 0) {
-            alert("You have won!");
-            this.state = false;
-        } else if (this.player.lifePoints <= 0 && this.computer.lifePoints > 0) {
-            alert("The computer has won!");
-            this.state = false;
-        }
+        this.displayMonsterCard(this.player.monsterCard, $playerMonsterCard);
+        this.displayMonsterCard(this.computer.monsterCard, $computerMonsterCard);
+
+        this.updateLifePoints(this.player, $playerLifePoints);
+        this.updateLifePoints(this.computer, $computerLifePoints);
+    }
+    sentToGraveyardDrawNewCard(player, node) {
+        player.monsterCard = this.getRandMonstCard(monsterList);
+        this.displayMonsterCard(player.monsterCard, node)
+        // debugging
+        console.log(player.monsterCard);
     }
 
+    // this turn happens instantaneously // add setTimeout() and alert() to slow pace of battle
     singleBattlePhase() {
-        console.log("Is this printing?");
+        console.log("Single battle-phase has occurred!");
 
         if (this.player.monsterCard.atk > this.computer.monsterCard.atk) {
-            const computerLPLost = (this.player.monsterCard.atk - this.computer.monsterCard.atk)
-            this.computer.lifePoints -= computerLPLost;
-
-            // deappend the monstercard 
-            // this.sendToGraveyard();
-
-            this.updateLifePoints($playerLifePoints, this.computer);
-            //  draw new card 
-            this.drawCard(this.computer, $computerMonsterCard)
+            // alert();
+            this.computer.lifePoints -= (this.player.monsterCard.atk - this.computer.monsterCard.atk)
+            // alert();
+            this.updateLifePoints(this.computer, $computerLifePoints);
+            // alert();
+            this.sentToGraveyardDrawNewCard(this.computer, $computerMonsterCard)
 
         } else if (this.player.monsterCard.atk < this.computer.monsterCard.atk) {
-
-            const playerLPLost = (this.computer.monsterCard.atk - this.player.monsterCard.atk)
-            this.player.lifePoints -= playerLPLost;
-            // deappend the monstercard
-            // this.sendToGraveyard(); 
-            this.updateLifePoints($computerLifePoints, this.player);
-            //  draw new card 
-            this.drawCard(this.player, $playerMonsterCard);
+            // alert(); 
+            this.player.lifePoints -= (this.computer.monsterCard.atk - this.player.monsterCard.atk)
+            // alert();
+            this.updateLifePoints(this.player, $playerLifePoints);
+            // alert();
+            this.sentToGraveyardDrawNewCard(this.player, $playerMonsterCard);
 
         } else if (this.player.monsterCard.atk === this.computer.monsterCard.atk) {
             console.log("both cards need to be sent to graveyard");
-            // deappend both cards
-            // this.sendToGraveyard();
-            // this.sendToGraveyard(); 
-            // draw two new cards
+            this.sentToGraveyardDrawNewCard(this.player, $playerMonsterCard);
+            this.sentToGraveyardDrawNewCard(this.computer, $computerMonsterCard);
         }
+
         this.checkWinState();
     }
-
+    checkWinState() {
+        if (this.player.lifePoints > 0 && this.computer.lifePoints <= 0) {
+            alert("You have won!");
+            location.reload();
+            this.state = false;
+        } else if (this.player.lifePoints <= 0 && this.computer.lifePoints > 0) {
+            alert("The computer has won!");
+            location.reload();
+            this.state = false;
+        }
+    }
 }
 class Player {
-    constructor(lifepoints = 2000) {
-        this.lifePoints = lifepoints;
+    constructor() {
+        this.lifePoints = 2000;
         this.monsterCard = null;
     }
 }
-// class Card {}
-
-
 
 /* =============================
 Yu-Gi-Oh API Database
 ============================= */
-// Global scope
-const game1 = new GameState(2000)
+// ====== Global GameState ====== //
+const game1 = new GameState()
 
 let cardData
 const yugioh = async () => {
@@ -198,18 +173,19 @@ yugioh().then(
         console.log('inside', cardData);
         cardData.forEach((currMonstCard) => {
             const monsterCardObj = {
-                name: currMonstCard.name, // string
-                race: currMonstCard.race, // string
-                desc: currMonstCard.desc, // string
-                atk: currMonstCard.atk, // int
-                def: currMonstCard.def, // int
-                cardImg: currMonstCard.card_images[0].image_url, // string of image URL
+                name: currMonstCard.name,
+                // race: currMonstCard.race,
+                // desc: currMonstCard.desc,
+                atk: currMonstCard.atk,
+                def: currMonstCard.def,
+                cardImg: currMonstCard.card_images[0].image_url,
             }
             monsterList.push(monsterCardObj);
         })
-        // renders first initial cards
+        // renders initialTurn()
         game1.initialTurn();
+        game1.singleBattlePhase();
         // this still doesn't work
-        $atkBtn.on("click", game1.singleBattlePhase);
+        // $atkBtn.on("click", game1.singleBattlePhase);
     }
 );
