@@ -34,7 +34,6 @@ const monsterList = []
 /* =============================
 MAIN FUNCTIONS FOR then() 
 ============================= */
-
 const randMonsCard = (array) => {
     const randIndex = Math.floor(Math.random() * array.length);
     return array[randIndex];
@@ -47,7 +46,6 @@ const removeIntroShowCarousel = () => {
     $introModal.remove();
     $duelistCarousel.toggleClass("show");
 }
-
 const removeDuelistCarouselshowGameContainer = () => {
     $duelistCarousel.remove()
     $gameContainer.toggleClass("show");
@@ -59,13 +57,6 @@ EVENT LISTENERS
 $duelBtn.click(removeIntroShowCarousel);
 $selectDuelist.click(removeDuelistCarouselshowGameContainer)
 
-// ================= Appending monsterCard to the page =========================== // 
-
-const displayMonsterCard = (card, domElement) => {
-    domElement.html(`
-    <img src="${card.cardImg}" alt="card image">
-    `);
-}
 
 /* =============================
 CLASSES
@@ -77,19 +68,27 @@ class GameState {
         this.player = new Player(life);
         this.computer = new Player(life);
     }
-    displayMonsterCard {
-        
+
+    // ================= Appending monsterCard to the page =========================== // 
+    displayMonsterCard(card, node) {
+        node.html(`
+            <img src="${card.cardImg}" alt="image">
+        `);
+    }
+    // ======= Get Random Monster Card ======= // 
+    getRandMonstCard(array) {
+        const randIndex = Math.floor(Math.random() * array.length);
+        return array[randIndex];
     }
     initialTurn() {
-
-        const card1 = randMonsCard(monsterList);
+        const card1 = this.getRandMonstCard(monsterList);
         this.player.monsterCard = card1;
 
-        const card2 = randMonsCard(monsterList);
+        const card2 = this.getRandMonstCard(monsterList);
         this.computer.monsterCard = card2;
 
-        displayMonsterCard(card1, $playerMonsterCard);
-        displayMonsterCard(card2, $computerMonsterCard);
+        this.displayMonsterCard(card1, $playerMonsterCard);
+        this.displayMonsterCard(card2, $computerMonsterCard);
 
         this.updateLifePoints($playerLifePoints, this.player);
         this.updateLifePoints($computerLifePoints, this.computer);
@@ -97,7 +96,7 @@ class GameState {
 
     drawCard(player, node) {
         // calls global randMonsCard() 
-        const newCard = randMonsCard(monsterList);
+        const newCard = this.getRandMonstCard(monsterList);
         // reassigns .monsterCard property on the player-class! 
         player.monsterCard = newCard;
         // redisplays monster card on the playerNode! 
