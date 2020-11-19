@@ -6,11 +6,11 @@ CACHED DOM NOTES
 // Game Container
 const $gameContainer = $('.gameContainer')
 
-// div Monster Card Img
+// <div> Monster Card Img
 const $playerMonsterCard = $('.playerMonsterCard')
 const $computerMonsterCard = $('.computerMonsterCard')
 
-// div Life Points
+// <div> Life Points
 const $playerLifePoints = $('.playerLifePoints')
 const $computerLifePoints = $('.computerLifePoints')
 
@@ -27,6 +27,8 @@ GLOBAL VARS
 
 // const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
 // setTimeout(() => {mainTheme.play()}, 500);
+
+// Array of Monster Card Objects 
 const monsterList = []
 
 /* =============================
@@ -41,26 +43,21 @@ const randMonsCard = (array) => {
 /* =============================
 HELPER FUNCTIONS FOR DOM-MANIPULATION
 ============================= */
-const removeIntro = () => {
+const removeIntroShowCarousel = () => {
     $introModal.remove();
-}
-const showDuelistCarousel = () => {
     $duelistCarousel.toggleClass("show");
 }
-const removeDuelistCarousel = () => {
+
+const removeDuelistCarouselshowGameContainer = () => {
     $duelistCarousel.remove()
-}
-const showGameContainer = () => {
     $gameContainer.toggleClass("show");
 }
 
 /* =============================
 EVENT LISTENERS
 ============================= */
-$duelBtn.click(removeIntro);
-$duelBtn.click(showDuelistCarousel);
-$selectDuelist.click(removeDuelistCarousel)
-$selectDuelist.click(showGameContainer);
+$duelBtn.click(removeIntroShowCarousel);
+$selectDuelist.click(removeDuelistCarouselshowGameContainer)
 
 // ================= Appending monsterCard to the page =========================== // 
 
@@ -79,6 +76,9 @@ class GameState {
         this.iterable = 0;
         this.player = new Player(life);
         this.computer = new Player(life);
+    }
+    displayMonsterCard {
+        
     }
     initialTurn() {
 
@@ -106,7 +106,7 @@ class GameState {
         console.log(player.MonsterCard);
     }
     sendToGraveyard() {
-    
+
     }
     updateLifePoints(node, currPlayer) {
         node.html(`
@@ -214,4 +214,3 @@ yugioh().then(
         $atkBtn.on("click", game1.singleBattlePhase);
     }
 );
-
