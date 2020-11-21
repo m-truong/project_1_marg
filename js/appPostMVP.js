@@ -15,27 +15,33 @@ $resetBtn.click(() => {
 });
 
 // ====== Show/Hide Modal & Carousel ====== // 
-const $introModal = $(".instructions")
-const $duelBtn = $(".duel-btn")
-const $duelistCarousel = $(".duelist-carousel")
-const $selectDuelist = $(".select-duelist-btn")
+const $introModal = $('.instructions')
+const $duelBtn = $('.duel-btn')
+const $duelistCarousel = $('.duelist-carousel')
+const $selectDuelist = $('.select-duelist-btn')
 
 // ====== Game Container ====== // 
 const $gameContainer = $('.game-container')
 
-// ======= Monster Card Img <div> ======= //
-const $player1MonsterCard = $('.player1-monster-card')
-const $player2MonsterCard = $('.player2-monster-card')
 
-// ======= Life Points <div> ======= // 
+// ====== Player 1 DOM Elements ===== //
 const $player1LifePoints = $('.player1-life-points')
-const $player2LifePoints = $('.player2-life-points')
-
-// ===== Cached Player 1's Attack and Draw Buttons ==== //
+// not used 
+// const $player1MonsterCard = $('.player1-monster-card')
+const $player1AttackingCard = $('#player1-attacking-card')
+const $player1ReceivingCard = $('#player1-receiving-card') 
 const $player1BeginAtkBtn = $('.player1-begin-attack-btn')
 const $player1ConfirmAtkBtn = $('.player1-confirm-attack-btn')
 
-// ===== Cached Player 2's Attack and Draw Buttons ==== //
+
+
+
+// ====== Player 2 DOM Elements ===== //
+const $player2LifePoints = $('.player2-life-points')
+// not used 
+// const $player2MonsterCard = $('.player2-monster-card')
+const $player2AttackingCard = $('#player1-attacking-card')
+const $player2ReceivingCard = $('#player1-receiving-card') 
 const $player2BeginAtkBtn = $('.player2-begin-attack-btn')
 const $player2ConfirmAtkBtn = $('.player2-confirm-attack-btn')
 
@@ -86,7 +92,8 @@ class GameState {
         this.player1 = {
             lifePoints: lifePoints,
             monsterCards: [],
-            cardImgs: [],
+            // not used 
+            // cardImgs: [],
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
@@ -96,7 +103,8 @@ class GameState {
         this.player2 = {
             lifePoints: lifePoints,
             monsterCards: [],
-            cardImgs: [],
+            // not used
+            // cardImgs: [],
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
@@ -113,12 +121,14 @@ class GameState {
         for (let k = 0; k < 5; k++) {
             const currCard1 = this.getRandMonstCard(monsterList);
             this.player1.monsterCards.push(currCard1);
-            this.player1.cardImgs.push(currCard1.cardImg);
+            // not used 
+            // this.player1.cardImgs.push(currCard1.cardImg);
             const imgNode1 = $(`<img id="${k}" class="player1-monster-card${k}" src=${currCard1.cardImg} alt="${currCard1.name}">`)
             this.player1.imgNodes.push(imgNode1);
             const currCard2 = this.getRandMonstCard(monsterList);
             this.player2.monsterCards.push(currCard2);
-            this.player2.cardImgs.push(currCard2.cardImg);
+            // not used
+            // this.player2.cardImgs.push(currCard2.cardImg);
             const imgNode2 = $(`<img id="${k}" class="player2-monster-card${k}" src="${currCard2.cardImg}" alt="${currCard2.name}">`)
             this.player2.imgNodes.push(imgNode2);
         }
@@ -143,9 +153,18 @@ class GameState {
         $player1BeginAtkBtn.click((evt) => {
             alert("Player 1 has begun their attack phase!")
             this.player1.imgNodes.forEach((currNode) => {
+                // assign HOVER EVENT HERE 
+                currNode.hover(() => {
+                    currNode.css('cursor', 'pointer')
+                }, () => {
+                    currNode.css('cursor', 'default')
+                })
                 currNode.click((evt) => {
                     const getMonsterID = evt.target.id
                     this.player1.currAttkMonst = this.player1.monsterCards[getMonsterID]
+
+                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
+
                     alert(`Player 1 has chosen ${this.player1.currAttkMonst.name} to attack with!`)
                     currNode.toggleClass('animate__animated animate__flash');
                     setTimeout(() => {
@@ -154,9 +173,18 @@ class GameState {
                 });
             });
             this.player2.imgNodes.forEach((currNode) => {
+                // assign HOVER EVENT HERE 
+                currNode.hover(() => {
+                    currNode.css('cursor', 'pointer')
+                }, () => {
+                    currNode.css('cursor', 'default')
+                })
                 currNode.dblclick((evt) => {
                     const getMonsterID = evt.target.id
                     this.player1.targetMonst = this.player2.monsterCards[getMonsterID]
+
+                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
+
                     alert(`Player 1 has chosen Player 2's ${this.player1.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
                     setTimeout(() => {
@@ -169,9 +197,18 @@ class GameState {
         $player2BeginAtkBtn.click((evt) => {
             alert("Player 2 has begun their attack phase!")
             this.player2.imgNodes.forEach((currNode) => {
+                currNode.hover(() => {
+                    currNode.css('cursor', 'pointer')
+                }, () => {
+                    currNode.css('cursor', 'default')
+                })
+                // ASSIGN OVER EVENT HERE 
                 currNode.click((evt) => {
                     const getMonsterID = evt.target.id
                     this.player2.currAttkMonst = this.player2.monsterCards[getMonsterID]
+
+                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
+
                     alert(`Player 2 has chosen ${this.player2.currAttkMonst.name} to attack with!`)
                     currNode.toggleClass('animate__animated animate__flash');
                     setTimeout(() => {
@@ -180,9 +217,19 @@ class GameState {
                 })
             });
             this.player1.imgNodes.forEach((currNode) => {
+                currNode.hover(() => {
+                    currNode.css('cursor', 'pointer')
+                }, () => {
+                    currNode.css('cursor', 'default')
+                })
+                // assign hover event here 
                 currNode.dblclick((evt) => {
+
                     const getMonsterID = evt.target.id
                     this.player2.targetMonst = this.player1.monsterCards[getMonsterID]
+
+                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
+
                     alert(`Player 2 has chosen Player 1's ${this.player2.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
                     setTimeout(() => {
@@ -262,9 +309,11 @@ class GameState {
             }
             this.player1.imgNodes.forEach((currNode) => {
                 currNode.off("click");
+                currNode.off("mouseenter mouseleave");
             })
             this.player2.imgNodes.forEach((currNode) => {
                 currNode.off("dblclick");
+                currNode.off("mouseenter mouseleave");
             })
             this.player1.currAttkMonst = null;
             this.player1.targetMonst = null;
@@ -338,9 +387,12 @@ class GameState {
             }
             this.player2.imgNodes.forEach((currNode) => {
                 currNode.off("click");
+                currNode.off("mouseenter mouseleave")
             })
             this.player1.imgNodes.forEach((currNode) => {
                 currNode.off("dblclick");
+                currNode.off("mouseenter mouseleave")
+
             })
             this.player2.currAttkMonst = null;
             this.player2.targetMonst = null;
