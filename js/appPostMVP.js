@@ -141,7 +141,7 @@ class GameState {
     }
     beginAttackPhase() {
         $player1BeginAtkBtn.click((evt) => {
-            alert("Player 1 has begun his attack phase!")
+            alert("Player 1 has begun their attack phase!")
             this.player1.imgNodes.forEach((currNode) => {
                 currNode.click((evt) => {
                     const getMonsterID = evt.target.id
@@ -167,7 +167,7 @@ class GameState {
         });
 
         $player2BeginAtkBtn.click((evt) => {
-            alert("Player 2 has begun his attack phase!")
+            alert("Player 2 has begun their attack phase!")
             this.player2.imgNodes.forEach((currNode) => {
                 currNode.click((evt) => {
                     const getMonsterID = evt.target.id
@@ -349,11 +349,29 @@ class GameState {
     }
     checkWinState() {
         if (this.player1.lifePoints > 0 && this.player2.lifePoints <= 0) {
-            alert("Player 1 has won! Thank you for playing!");
-            location.reload();
+            alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉
+            Player 1 has won! Player 2 has been defeated! Congratulations! Thank you for playing!
+            🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
+            mainTheme.pause();
+            mainTheme.currentTime = 0;
+            const victory = new Audio("5-03 - Winning [Yuma] (ZEXAL).mp3");
+            victory.loop = true
+            victory.play();
+            setTimeout(() => {
+                location.reload();
+            }, 50000)
         } else if (this.player1.lifePoints <= 0 && this.player2.lifePoints > 0) {
-            alert("Player 2 has won! Thank you for playing!");
-            location.reload();
+            alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉  
+            Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing!
+            🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
+            mainTheme.pause();
+            mainTheme.currentTime = 0;
+            const victory = new Audio("5-03 - Winning [Yuma] (ZEXAL).mp3");
+            victory.loop = true
+            victory.play();
+            setTimeout(() => {
+                location.reload();
+            }, 50000)
         }
     }
     // ======= Display Life Points ============= //
@@ -394,7 +412,7 @@ yugioh().then(
             monsterList.push(monsterCardObj);
         })
         // ====== Global GameState ====== //
-        const game1 = new GameState(10000)
+        const game1 = new GameState(1000)
         game1.getMonsterCardsImages();
         game1.displayAllCards();
         game1.beginAttackPhase();
