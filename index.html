@@ -29,43 +29,54 @@
 
 <body>
     <div class="heading container">
-        <h1 class="title">Yu-Gi-Oh Card Battle</h1>
+        <h1 class="title">Mike's Card Battle Game</h1>
         <h2 class="player-turn">Player 1 vs. Player 2</h2>
         <button type="button" id="reset" class="btn btn-lg btn-warning">Restart Game</button>
     </div>
 
     <!-- Welcome Jumbotron -->
     <div class="flex-container ">
-        <div class="intro jumbotron">
-            <h1 class="display-4">Welcome to Duelist Kingdom!</h1>
+        <div class="instructions jumbotron">
+            <h1 class="display-4">Yu-Gi-Oh Card Battle!</h1>
             <hr class="my-4">
             <p class="lead">Yu-Gi-Oh! is a card battle game in which two players attempt to defeat each other by
                 decreasing
                 their opponent's Life Points (down to 0) using monster cards from their deck. </p>
             <hr class="my-4">
-            <h3>How To Play:</h3>
-            <p>You are given a random monster card at the start of every turn. You can choose to attack the opponent's
-                monster card on the field when it is in the Attack Position. Here's how damage to a player's Life Points
-                is calculated for Attack vs Attack:
-                <ul>
-                    <li> When your monster's ATK value is higher than the opponent's ATK value, the opponent's monster
-                        is sent to
-                        the Graveyard and the amount of excess ATK value is subtracted from the opponent's Life Points.
-                    </li>
-                    <li> When your monster's ATK value is lower than the opponent's ATK value, your monster is sent to
-                        the
-                        Graveyard and the amount of excess ATK value is subtracted from your Life Points.</li>
-                    <li> When both monsters' ATK value is even, both monsters are sent to the Graveyard, but no damage
-                        is done to either players' Life Points.</li>
-                </ul>
-            </p>
-            <a class="duelBtn btn btn-success btn-lg" href="#" role="button">Let's Duel!</a>
+            <h3> How damage to Life Points is calculated: </h3>
+            <ul>
+                <li> When your monster's ATK value is higher than the opponent's ATK value, the opponent's monster
+                    is sent to
+                    the Graveyard and the amount of excess ATK value is subtracted from the opponent's Life Points.
+                </li>
+                <li> When your monster's ATK value is lower than the opponent's ATK value, your monster is sent to
+                    the
+                    Graveyard and the amount of excess ATK value is subtracted from your Life Points.</li>
+                <li> When both monsters' ATK value is even, both monsters are sent to the Graveyard, but no damage
+                    is done to either players' Life Points.</li>
+            </ul>
+
+            <h3>How To Play and Switch Turns:</h3>
+            <p>Each player is given five monster cards at the start of the game. Follow these steps in order to complete
+                your turn...</p>
+            <ol>
+                <li>When it is the player's turn, click the "Begin Attack Phase" Button</li>
+                <li>"Single Click" a Monster Card on your side of the field to choose to attack with</li>
+                <li>"Double Click" a Monster Card on your opponent's side of the field to attack against</li>
+                <li>Click the "Confirm Attack Phase" Button to commence the Attack Phase</li>
+                <li>Switch turns</li>
+                <li>Note: you cannot change which Monster Card to attack with or against, once they've been clicked!
+                </li>
+            </ol>
+
+
+            <a class="duel-btn btn btn-success btn-lg" href="#" role="button">Let's Duel!</a>
         </div>
     </div>
     <!-- removed after starting game -->
 
     <!-- Duelist Carousel -->
-    <div class="duelistCarousel">
+    <div class="duelist-carousel">
         <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
                 <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -77,7 +88,6 @@
                     <img src="https://ms.yugipedia.com//7/7f/YugiMuto-DSOD-DULI.png" class="d-block w-50" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Yugi Moto</h5>
-                        <p></p>
                     </div>
                 </div>
                 <div class="carousel-item">
@@ -85,7 +95,6 @@
                         class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Seto Kaiba</h5>
-                        <p></p>
                     </div>
                 </div>
                 <div class="carousel-item">
@@ -93,7 +102,6 @@
                         class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>Maximillion Pegasus </h5>
-                        <p></p>
                     </div>
                 </div>
             </div>
@@ -106,55 +114,141 @@
                 <span class="sr-only">Next Duelist</span>
             </a>
         </div>
-        <button class="selectDuelist btn btn-lg" type="button">Select Duelist</button>
+        <button class="select-duelist-btn btn btn-lg" type="button">Select Duelist</button>
     </div>
     <!-- removed after proceeding to dueling stage -->
 
-    <!-- Going to have to create an entire <div> dueling-board using Bootstrap -->
-
-    <!-- Container with the Monster Cards -->
-    <div class="gameContainer container-fluid">
+    <!-- Container for Player 1's Monster Cards -->
+    <div class="game-container player1-game-container container-fluid">
         <div class="row align-items-center justify-content-center">
+            <div id="player1-duelist" class="card col-md-2 offset-md-1">
+                <!-- Image of Player 1's Duelist Here -->
+            </div>
             <!-- Player 1 Life Points -->
-            <div class="col card" style="width: 18rem;">
+            <div class="card col-md-2 offset-md-1 " style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="player1LifePoints card-title">
+                    <h6>Player 1's Life Points</h6>
+                    <div class="player1-life-points">
                         <!-- Updated Life Points-->
-                    </h5>
-                    <a href="#" class="drawBtn1 btn btn-secondary">Draw</a>
-                    <a href="#" class="atkBtn1 btn btn-success">Attack</a>
+                    </div>
+                    <a href="#" class="player1-begin-attack-btn btn btn-secondary">Begin Attack Phase</a>
+                    <a href="#" class="player1-confirm-attack-btn btn btn-success">Confirm Attack</a>
                 </div>
             </div>
-            <!-- Player 1 Monster Card -->
-            <div class="monsterCardImg col">
-                <img class="click-me-1 player1MonsterCard" src="" alt="card"> <!-- Updates Monster Image Here-->
-            </div>
-            <!-- Player 2 Monster Card -->
-            <div class="monsterCardImg col">
-                <img class="click-me-2 player2MonsterCard" src="" alt="card"> <!-- Updates Monster Image Here-->
-            </div>
-            <!-- Player 2 Life Points -->
-            <div class="col card" style="width: 18rem;">
+            <!-- Player 1 Attacking Monster Card -->
+            <div class="card col-md-2 offset-md-1 " style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="player2LifePoints card-title">
-                        <!--Updated Life Points-->
-                    </h5>
-                    <a href="#" class="drawBtn2 btn btn-secondary">Draw</a>
-                    <a href="#" class="atkBtn2 btn btn-success">Attack</a>
+                    <h6>Player 1's Attacking Monster Card</h6>
+                    <div id="player1-attacking-card" class="">
+                        <!-- Monster Data -->
+                    </div>
+                </div>
+            </div>
+            <!-- Player 2 Receiving Attacking Monster Card -->
+            <div class="card col-md-2 offset-md-1 " style="width: 18rem;">
+                <div class="card-body">
+                    <h6>Player 2's Receiving Monster Card</h6>
+                    <div id="player1-receiving-card" class="">
+                        <!-- Monster Data -->
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="row align-items-center justify-content-center">
+            <!-- Player 1 Monster Card -->
+            <div class="player1-monster-cards card0 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 2 Monster Card -->
+            <div class="player1-monster-cards card1 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 1 Monster Card -->
+            <div class="player1-monster-cards card2 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 1 Monster Card -->
+            <div class="player1-monster-cards card3 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 1 Monster Card -->
+            <div class="player1-monster-cards card4 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+        </div>
+    </div>
 
-        <!-- jQuery Script -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-        </script>
-        <!-- Bootstrap Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
-        </script>
-        <!-- App.js -->
-        <script defer src="js/app.js"></script>
+    <!-- Container for Player 2's Monster Cards -->
+    <div class="game-container player1-game-container container-fluid">
+        <div class="player-2-monster-cards align-items-center justify-content-center row">
+            <!-- Player 1 Monster Card -->
+            <div class="player2-monster-cards card0 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 2 Monster Card -->
+            <div class="player2-monster-cards card1 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 1 Monster Card -->
+            <div class="player2-monster-cards card2 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 1 Monster Card -->
+            <div class="player2-monster-cards card3 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+            <!-- Player 1 Monster Card -->
+            <div class="player2-monster-cards card4 col">
+                <!-- Updates Monster Image Here -->
+            </div>
+        </div>
+        <!-- Player 2 Life Points -->
+        <div class="row align-items-center justify-content-center">
+            <div id="player2-duelist" class="card col-md-2 offset-md-1">
+                <!-- Image of Player 2's Duelist Here -->
+            </div>
+            <!-- Player 1 Life Points -->
+            <div class="card col-md-2 offset-md-1 " style="width: 18rem;">
+                <div class="card-body">
+                    <h6>Player 2's Life Points</h6>
+                    <div class="player2-life-points">
+                        <!-- Updated Life Points-->
+                    </div>
+                    <a href="#" class="player2-begin-attack-btn btn btn-secondary">Begin Attack Phase</a>
+                    <a href="#" class="player2-confirm-attack-btn btn btn-success">Confirm Attack</a>
+                </div>
+            </div>
+            <!-- Player 2 Attacking Monster Card -->
+            <div class="card col-md-2 offset-md-1 " style="width: 18rem;">
+                <div class="card-body">
+                    <h6>Player 2's Attacking Monster Card</h6>
+                    <div id="player2-attacking-card" class="">
+                        <!-- Monster Data -->
+                    </div>
+                </div>
+            </div>
+            <!-- Player 1 Receiving Attacking Monster Card -->
+            <div class="card col-md-2 offset-md-1 " style="width: 18rem;">
+                <div class="card-body">
+                    <h6>Player 1's Receiving Monster Card</h6>
+                    <div id="player2-receiving-card" class="">
+                        <!-- Monster Data -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery Script -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <!-- Bootstrap Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous">
+    </script>
+    <!-- App.js -->
+    <script defer src="js/app.js"></script>
 </body>
 
 </html>
