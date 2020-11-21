@@ -5,8 +5,7 @@ CACHED DOM NOTES
 /**
  * Change this text to display Player 1's turn or Player 2's turn
  */
-const $displayPlayerTurn = $('.player-turn')
-$displayPlayerTurn.html = ``;
+const $displayPlayerTurn = $('#player-turn')
 
 // * Reset Button * //
 const $resetBtn = $("#reset")
@@ -63,12 +62,14 @@ const removeIntroShowCarousel = () => {
     $duelistCarousel.toggleClass("show");
     setTimeout(() => {
         mainTheme.loop = true;
+        mainTheme.volume = 0.5;
         mainTheme.play()
     }, 500);
 }
 const removeDuelistCarouselshowGameContainer = () => {
     $duelistCarousel.remove()
     $gameContainer.toggleClass("show");
+    $displayPlayerTurn.html(`Player 1 begin your Attack Phase!`);
 }
 
 /* =============================
@@ -90,8 +91,6 @@ class GameState {
         this.player1 = {
             lifePoints: lifePoints,
             monsterCards: [],
-            // not used 
-            // cardImgs: [],
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
@@ -101,8 +100,6 @@ class GameState {
         this.player2 = {
             lifePoints: lifePoints,
             monsterCards: [],
-            // not used
-            // cardImgs: [],
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
@@ -119,14 +116,10 @@ class GameState {
         for (let k = 0; k < 5; k++) {
             const currCard1 = this.getRandMonstCard(monsterList);
             this.player1.monsterCards.push(currCard1);
-            // not used 
-            // this.player1.cardImgs.push(currCard1.cardImg);
             const imgNode1 = $(`<img id="${k}" class="player1-monster-card${k}" src=${currCard1.cardImg} alt="${currCard1.name}">`)
             this.player1.imgNodes.push(imgNode1);
             const currCard2 = this.getRandMonstCard(monsterList);
             this.player2.monsterCards.push(currCard2);
-            // not used
-            // this.player2.cardImgs.push(currCard2.cardImg);
             const imgNode2 = $(`<img id="${k}" class="player2-monster-card${k}" src="${currCard2.cardImg}" alt="${currCard2.name}">`)
             this.player2.imgNodes.push(imgNode2);
         }
@@ -147,9 +140,9 @@ class GameState {
         this.updateLifePoints(this.player1, $player1LifePoints);
         this.updateLifePoints(this.player2, $player2LifePoints);
     }
-    appendMonsterCards(playerNodeToDisplayOn, monsterCardToDisplay) {
+    // appendMonsterCards(playerNodeToDisplayOn, monsterCardToDisplay) {
 
-    }
+    // }
     beginAttackPhase() {
         $player1BeginAtkBtn.click((evt) => {
             alert("Player 1 has begun their attack phase!")
@@ -336,7 +329,8 @@ class GameState {
             this.player1.currAttkMonst = null;
             this.player1.targetMonst = null;
             $player1AttackingCard.html(``)
-            $player1ReceivingCard.html(``) 
+            $player1ReceivingCard.html(``)
+            $displayPlayerTurn.html(`It is now Player 2's turn to begin their Attack Phase!`); 
             this.checkWinState();
         })
 
@@ -418,6 +412,7 @@ class GameState {
             this.player2.targetMonst = null;
             $player2AttackingCard.html(``)
             $player2ReceivingCard.html(``)
+            $displayPlayerTurn.html(`It is now Player 1's turn to begin their Attack Phase!`); 
             this.checkWinState();
         })
     }
@@ -430,10 +425,13 @@ class GameState {
             mainTheme.currentTime = 0;
             const victory = new Audio("5-03 - Winning [Yuma] (ZEXAL).mp3");
             victory.loop = true
+            victory.volume = 0.5
             victory.play();
+            $displayPlayerTurn.html(`🎉 🎉 🎉  Player 1 has won! Player 2 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to continue playing! 🎉 🎉 🎉 `);
             setTimeout(() => {
                 location.reload();
             }, 50000)
+            
         } else if (this.player1.lifePoints <= 0 && this.player2.lifePoints > 0) {
             alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉  
             Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing!
@@ -442,7 +440,9 @@ class GameState {
             mainTheme.currentTime = 0;
             const victory = new Audio("5-03 - Winning [Yuma] (ZEXAL).mp3");
             victory.loop = true
+            victory.volume = 0.5
             victory.play();
+            $displayPlayerTurn.html(`🎉 🎉 🎉  Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to continue playing! 🎉 🎉 🎉 `);
             setTimeout(() => {
                 location.reload();
             }, 50000)
@@ -486,7 +486,7 @@ yugioh().then(
             monsterList.push(monsterCardObj);
         })
         // ====== Global GameState ====== //
-        const game1 = new GameState(5000)
+        const game1 = new GameState(100)
         game1.getMonsterCardsImages();
         game1.displayAllCards();
         game1.beginAttackPhase();
