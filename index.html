@@ -28,6 +28,12 @@
 </head>
 
 <body>
+    <div class="heading container">
+        <h1 class="title">Yu-Gi-Oh Card Battle</h1>
+        <h2 class="player-turn">Player 1 vs. Player 2</h2>
+        <button type="button" id="reset" class="btn btn-lg btn-warning">Restart Game</button>
+    </div>
+
     <!-- Welcome Jumbotron -->
     <div class="flex-container ">
         <div class="intro jumbotron">
@@ -49,7 +55,8 @@
                     <li> When your monster's ATK value is lower than the opponent's ATK value, your monster is sent to
                         the
                         Graveyard and the amount of excess ATK value is subtracted from your Life Points.</li>
-                    <li> When both monsters' ATK value is even, both monsters are sent to the Graveyard.</li>
+                    <li> When both monsters' ATK value is even, both monsters are sent to the Graveyard, but no damage
+                        is done to either players' Life Points.</li>
                 </ul>
             </p>
             <a class="duelBtn btn btn-success btn-lg" href="#" role="button">Let's Duel!</a>
@@ -103,6 +110,8 @@
     </div>
     <!-- removed after proceeding to dueling stage -->
 
+    <!-- Going to have to create an entire <div> dueling-board using Bootstrap -->
+
     <!-- Container with the Monster Cards -->
     <div class="gameContainer container-fluid">
         <div class="row align-items-center justify-content-center">
@@ -118,11 +127,11 @@
             </div>
             <!-- Player 1 Monster Card -->
             <div class="monsterCardImg col">
-                <img class="player1MonsterCard" src="" alt="card"> <!-- Updates Monster Image Here-->
+                <img class="click-me-1 player1MonsterCard" src="" alt="card"> <!-- Updates Monster Image Here-->
             </div>
             <!-- Player 2 Monster Card -->
             <div class="monsterCardImg col">
-                <img class="player2MonsterCard" src="" alt="card"> <!-- Updates Monster Image Here-->
+                <img class="click-me-2 player2MonsterCard" src="" alt="card"> <!-- Updates Monster Image Here-->
             </div>
             <!-- Player 2 Life Points -->
             <div class="col card" style="width: 18rem;">

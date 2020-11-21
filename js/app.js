@@ -2,6 +2,28 @@
 CACHED DOM NOTES
 =========================*/
 
+/**
+ * Change this text to display Player 1 or Player 2 
+ */
+const $displayPlayerTurn = $('.player-turn')
+$displayPlayerTurn.html = ``;
+
+// * Reset Button * //
+const $resetBtn = $("#reset")
+$resetBtn.click(() => {
+    location.reload()
+});
+
+// ==== Attempt to add click-listener to card <img> HTML elements! ==== //
+const $clickMe1 = $('.click-me-1')
+const $clickMe2 = $('.click-me-2')
+$clickMe1.click((evt) => {
+    console.log(evt.target)
+})
+$clickMe2.click((evt) => {
+    console.log(evt.target)
+})
+
 // ====== Show/Hide Modal & Carousel ====== // 
 const $introModal = $(".intro")
 const $duelBtn = $(".duelBtn")
@@ -23,15 +45,18 @@ const $player2LifePoints = $('.player2LifePoints')
 const $atkBtn1 = $('.atkBtn1')
 const $atkBtn2 = $('.atkBtn2')
 
+// Player 1 and Player 2 Draw Buttons //
+const $drawBtn1 = $('.drawBtn1')
+const $drawBtn2 = $('.drawBtn2')
+
 /* ======================
 GLOBAL VARS
 =========================*/
+// const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
+// setTimeout(() => {mainTheme.play()}, 500);
 
 // ======= Array of Monster Card Objects ======= // 
 const monsterList = []
-
-// const mainTheme = new Audio("Yu-Gi-Oh - Sound Duel 1 - Passionate Duelist.mp3");
-// setTimeout(() => {mainTheme.play()}, 500);
 
 /* =============================
 MAIN FUNCTIONS FOR then() 
@@ -76,7 +101,7 @@ class GameState {
         this.singleBattlePhase = this.singleBattlePhase.bind(this);
         this.initialTurn = this.initialTurn.bind(this);
     }
-    // ================= Appending monsterCard to the page =========================== // 
+    // ================= Displaying Monster Card Image =========================== // 
     displayMonsterCard(card, node) {
         const tempImg = node.attr("src");
         node.attr("src", `${card.cardImg}`);
@@ -91,7 +116,7 @@ class GameState {
     getRandMonstCard(array) {
         return array[Math.floor(Math.random() * array.length)];
     }
-    // ======= Updates HTML to Display Life Points ============= //
+    // ======= Display Life Points ============= //
     updateLifePoints(player, node) {
         node.html(`${player.lifePoints}`);
 
@@ -110,6 +135,7 @@ class GameState {
     }
     singleBattlePhase() {
         if (this.player1.monsterCard.atk > this.player2.monsterCard.atk) {
+            // add comments to make code readable // 
             alert(`After initiating the Attack Phase, Player 1's Monster Card's Attack Points are greater than Player 2's Monster Card's Attack Points!`)
             this.player2.lifePoints -= (this.player1.monsterCard.atk - this.player2.monsterCard.atk)
             alert(`The attack did ${(this.player1.monsterCard.atk - this.player2.monsterCard.atk)} damage to Player 2's Life Points!`);
@@ -130,6 +156,7 @@ class GameState {
             alert(`${this.player.monsterCard.name} has been sent to the Graveyard!`);
             this.sentToGraveyardDrawNewCard(this.player1, $playerMonsterCard);
         }
+        $displayPlayerTurn.html = `Player 1 please click Attack to start the game`;
         this.checkWinState();
     }
     checkWinState() {
@@ -149,6 +176,8 @@ Yu-Gi-Oh API Database
 
 // ====== Global GameState ====== //
 const game1 = new GameState()
+$atkBtn1.click(game1.singleBattlePhase)
+$atkBtn2.click(game1.singleBattlePhase)
 
 // ====== Asynchronous Fetch API ======= // 
 let cardData
@@ -165,7 +194,6 @@ const yugioh = async () => {
 
 // ========== GAME ENTRYPOINT STARTS HERE ============= //
 yugioh().then(
-
     () => {
         cardData.forEach((currMonstCard) => {
             const monsterCardObj = {
@@ -177,7 +205,9 @@ yugioh().then(
             monsterList.push(monsterCardObj);
         })
         game1.initialTurn(monsterList);
-        $atkBtn1.click(game1.singleBattlePhase)
-        $atkBtn2.click(game1.singleBattlePhase)
+
+        // not working 
+        // $drawBtn1.click(() => {game1.sentToGraveyardDrawNewCard(game1.player1, $player1LifePoints)})
+        // $drawBtn2.click(() => {game1.sentToGraveyardDrawNewCard(game1.player2, $player2LifePoints)})
     }
 );

@@ -8,6 +8,10 @@ body {
     font-family: 'Fondamento', cursive;
     /* font-family: 'Baloo Chettan 2', cursive; */
 }
+div.heading {
+    text-align: center;
+    color: white;
+}
 
 div.flex-container {
     display: flex;
@@ -30,7 +34,6 @@ div.jumbotron {
     box-shadow: 0 4px 8px rgb(26, 31, 39);
     transition: all 0.3s ease-in-out;
 
-    /* animation doesn't work properly */
     animation: slideInDown; 
     animation-duration: 2s;
 }
@@ -59,6 +62,9 @@ div.duelistCarousel.show {
 
     animation: slideInDown; 
     animation-duration: 2s;
+
+    background-color: rgb(243, 187, 66);
+    box-shadow: 0 4px 8px rgb(26, 31, 39);
 }
 /* Fixed Height Container */
 div.carousel-item {
@@ -85,10 +91,11 @@ div.gameContainer.show {
 div.monsterCardImg {
     display: flex;
     justify-content: center;
+    
 }
 
 div.card {
     background-color: rgb(243, 187, 66);
     box-shadow: 0 4px 8px rgb(26, 31, 39);
-    transition: all 0.3s ease-in-out;
+    /* transition: all 0.3s ease-in-out; */
 }
