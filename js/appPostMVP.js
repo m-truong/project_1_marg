@@ -23,13 +23,12 @@ const $selectDuelist = $('.select-duelist-btn')
 // ====== Game Container ====== // 
 const $gameContainer = $('.game-container')
 
-
 // ====== Player 1 DOM Elements ===== //
 const $player1LifePoints = $('.player1-life-points')
 // not used 
 // const $player1MonsterCard = $('.player1-monster-card')
 const $player1AttackingCard = $('#player1-attacking-card')
-const $player1ReceivingCard = $('#player1-receiving-card') 
+const $player1ReceivingCard = $('#player1-receiving-card')
 const $player1BeginAtkBtn = $('.player1-begin-attack-btn')
 const $player1ConfirmAtkBtn = $('.player1-confirm-attack-btn')
 
@@ -40,18 +39,19 @@ const $player1ConfirmAtkBtn = $('.player1-confirm-attack-btn')
 const $player2LifePoints = $('.player2-life-points')
 // not used 
 // const $player2MonsterCard = $('.player2-monster-card')
-const $player2AttackingCard = $('#player1-attacking-card')
-const $player2ReceivingCard = $('#player1-receiving-card') 
+const $player2AttackingCard = $('#player2-attacking-card')
+const $player2ReceivingCard = $('#player2-receiving-card')
 const $player2BeginAtkBtn = $('.player2-begin-attack-btn')
 const $player2ConfirmAtkBtn = $('.player2-confirm-attack-btn')
 
 /* ======================
 GLOBAL VARS
 =========================*/
-const mainTheme = new Audio("2-18 - Duel Island Theme.mp3");
-
 // ======= Array of Monster Card Objects ======= // 
 const monsterList = []
+
+const mainTheme = new Audio("2-18 - Duel Island Theme.mp3");
+
 
 /* =============================
 MAIN FUNCTIONS FOR then() 
@@ -149,6 +149,9 @@ class GameState {
         this.updateLifePoints(this.player1, $player1LifePoints);
         this.updateLifePoints(this.player2, $player2LifePoints);
     }
+    appendMonsterCards(playerNodeToDisplayOn, monsterCardToDisplay) {
+
+    }
     beginAttackPhase() {
         $player1BeginAtkBtn.click((evt) => {
             alert("Player 1 has begun their attack phase!")
@@ -162,9 +165,12 @@ class GameState {
                 currNode.click((evt) => {
                     const getMonsterID = evt.target.id
                     this.player1.currAttkMonst = this.player1.monsterCards[getMonsterID]
-
-                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
-
+                    // much easier to do
+                    $player1AttackingCard.html(`
+                        <p>${this.player1.currAttkMonst.name}</p>
+                        <p>Attack Points: ${this.player1.currAttkMonst.atk}</p>
+                        <p>${this.player1.currAttkMonst.desc}</p>
+                    `) 
                     alert(`Player 1 has chosen ${this.player1.currAttkMonst.name} to attack with!`)
                     currNode.toggleClass('animate__animated animate__flash');
                     setTimeout(() => {
@@ -183,7 +189,12 @@ class GameState {
                     const getMonsterID = evt.target.id
                     this.player1.targetMonst = this.player2.monsterCards[getMonsterID]
 
-                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
+                    // much easier to do
+                    $player1ReceivingCard.html(`
+                        <p>${this.player1.targetMonst.name}</p>
+                        <p>Attack Points: ${this.player1.targetMonst.atk}</p>
+                        <p>${this.player1.targetMonst.desc}</p>
+                    `) 
 
                     alert(`Player 1 has chosen Player 2's ${this.player1.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
@@ -207,7 +218,12 @@ class GameState {
                     const getMonsterID = evt.target.id
                     this.player2.currAttkMonst = this.player2.monsterCards[getMonsterID]
 
-                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
+                    // much easier to do
+                    $player2AttackingCard.html(`
+                        <p>${this.player2.currAttkMonst.name}</p>
+                        <p>Attack Points: ${this.player2.currAttkMonst.atk}</p>
+                        <p>${this.player2.currAttkMonst.desc}</p>
+                    `) 
 
                     alert(`Player 2 has chosen ${this.player2.currAttkMonst.name} to attack with!`)
                     currNode.toggleClass('animate__animated animate__flash');
@@ -227,9 +243,13 @@ class GameState {
 
                     const getMonsterID = evt.target.id
                     this.player2.targetMonst = this.player1.monsterCards[getMonsterID]
-
-                    // this is where you have to ADD THE CURRENTLY CLICKED MONSTER TO THE DOM 
-
+                    // much easier to do
+                    $player2ReceivingCard.html(`
+                        <p>${this.player2.targetMonst.name}</p>
+                        <p>Attack Points: ${this.player2.targetMonst.atk}</p>
+                        <p>${this.player2.targetMonst.desc}</p>
+                    `) 
+                    
                     alert(`Player 2 has chosen Player 1's ${this.player2.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
                     setTimeout(() => {
@@ -317,6 +337,8 @@ class GameState {
             })
             this.player1.currAttkMonst = null;
             this.player1.targetMonst = null;
+            $player1AttackingCard.html(``)
+            $player1ReceivingCard.html(``) 
             this.checkWinState();
         })
 
@@ -396,6 +418,8 @@ class GameState {
             })
             this.player2.currAttkMonst = null;
             this.player2.targetMonst = null;
+            $player2AttackingCard.html(``)
+            $player2ReceivingCard.html(``)
             this.checkWinState();
         })
     }
@@ -464,7 +488,7 @@ yugioh().then(
             monsterList.push(monsterCardObj);
         })
         // ====== Global GameState ====== //
-        const game1 = new GameState(1000)
+        const game1 = new GameState(5000)
         game1.getMonsterCardsImages();
         game1.displayAllCards();
         game1.beginAttackPhase();
