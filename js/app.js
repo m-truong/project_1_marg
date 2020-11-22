@@ -10,37 +10,30 @@ $resetBtn.click(() => {
 
 // ====== Show/Hide Modal & Carousel ====== // 
 const $displayPlayerTurn = $('#player-turn')
-const $duelBtn = $('.duel-btn')
-const $introModal = $('.instructions')
+const $duelBtn = $('#duel-btn')
+const $introModal = $('#instructions')
 
 // ====== Game Container ====== // 
 const $gameContainer = $('.game-container') // same class applies to both Player 1 & 2 containers 
 
 // ====== Player 1 DOM Elements ===== //
-// const $player1DuelistCarousel = $('#player1-duelist-carousel')
-// const $player1SelectDuelist = $('#player1-select-duelist-btn')
-
-
-const $player1LifePoints = $('.player1-life-points')
+const $player1LifePoints = $('#player1-life-points')
 // not used 
 // const $player1MonsterCard = $('.player1-monster-card')
 const $player1AttackingCard = $('#player1-attacking-card')
 const $player1ReceivingCard = $('#player1-receiving-card')
-const $player1BeginAtkBtn = $('.player1-begin-attack-btn')
-const $player1ConfirmAtkBtn = $('.player1-confirm-attack-btn')
+const $player1BeginAtkBtn = $('#player1-begin-attack-btn')
+const $player1ConfirmAtkBtn = $('#player1-confirm-attack-btn')
 
 
 // ====== Player 2 DOM Elements ===== //
-// const $player2DuelistCarousel = $('#player2-duelist-carousel')
-// const $player2SelectDuelist = $('#player2-select-duelist-btn')
-
-const $player2LifePoints = $('.player2-life-points')
+const $player2LifePoints = $('#player2-life-points')
 // not used 
 // const $player2MonsterCard = $('.player2-monster-card')
 const $player2AttackingCard = $('#player2-attacking-card')
 const $player2ReceivingCard = $('#player2-receiving-card')
-const $player2BeginAtkBtn = $('.player2-begin-attack-btn')
-const $player2ConfirmAtkBtn = $('.player2-confirm-attack-btn')
+const $player2BeginAtkBtn = $('#player2-begin-attack-btn')
+const $player2ConfirmAtkBtn = $('#player2-confirm-attack-btn')
 
 /* ======================
 GLOBAL VARS
@@ -89,8 +82,7 @@ class GameState {
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
-            // add player image
-            player1Duelist: null,
+
         }
         this.player2 = {
             lifePoints: lifePoints,
@@ -98,8 +90,7 @@ class GameState {
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
-            // add player image 
-            player2Duelist: null,
+
         }
         this.getRandMonstCard = this.getRandMonstCard.bind(this);
     }
@@ -135,14 +126,10 @@ class GameState {
         this.updateLifePoints(this.player1, $player1LifePoints);
         this.updateLifePoints(this.player2, $player2LifePoints);
     }
-    // appendMonsterCards(playerNodeToDisplayOn, monsterCardToDisplay) {
-
-    // }
     beginAttackPhase() {
         $player1BeginAtkBtn.click((evt) => {
             alert("Player 1 has begun their attack phase!")
             this.player1.imgNodes.forEach((currNode) => {
-                // assign HOVER EVENT HERE 
                 currNode.hover(() => {
                     currNode.css('cursor', 'pointer')
                 }, () => {
@@ -151,7 +138,6 @@ class GameState {
                 currNode.click((evt) => {
                     const getMonsterID = evt.target.id
                     this.player1.currAttkMonst = this.player1.monsterCards[getMonsterID]
-                    // much easier to do
                     $player1AttackingCard.html(`
                         <p>${this.player1.currAttkMonst.name}</p>
                         <p>Attack Points: ${this.player1.currAttkMonst.atk}</p>
@@ -165,7 +151,6 @@ class GameState {
                 });
             });
             this.player2.imgNodes.forEach((currNode) => {
-                // assign HOVER EVENT HERE 
                 currNode.hover(() => {
                     currNode.css('cursor', 'pointer')
                 }, () => {
@@ -174,14 +159,11 @@ class GameState {
                 currNode.dblclick((evt) => {
                     const getMonsterID = evt.target.id
                     this.player1.targetMonst = this.player2.monsterCards[getMonsterID]
-
-                    // much easier to do
                     $player1ReceivingCard.html(`
                         <p>${this.player1.targetMonst.name}</p>
                         <p>Attack Points: ${this.player1.targetMonst.atk}</p>
                         <p>${this.player1.targetMonst.desc}</p>
                     `)
-
                     alert(`Player 1 has chosen Player 2's ${this.player1.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
                     setTimeout(() => {
@@ -190,7 +172,6 @@ class GameState {
                 });
             });
         });
-
         $player2BeginAtkBtn.click((evt) => {
             alert("Player 2 has begun their attack phase!")
             this.player2.imgNodes.forEach((currNode) => {
@@ -199,18 +180,14 @@ class GameState {
                 }, () => {
                     currNode.css('cursor', 'default')
                 })
-                // ASSIGN OVER EVENT HERE 
                 currNode.click((evt) => {
                     const getMonsterID = evt.target.id
                     this.player2.currAttkMonst = this.player2.monsterCards[getMonsterID]
-
-                    // much easier to do
                     $player2AttackingCard.html(`
                         <p>${this.player2.currAttkMonst.name}</p>
                         <p>Attack Points: ${this.player2.currAttkMonst.atk}</p>
                         <p>${this.player2.currAttkMonst.desc}</p>
                     `)
-
                     alert(`Player 2 has chosen ${this.player2.currAttkMonst.name} to attack with!`)
                     currNode.toggleClass('animate__animated animate__flash');
                     setTimeout(() => {
@@ -224,18 +201,14 @@ class GameState {
                 }, () => {
                     currNode.css('cursor', 'default')
                 })
-                // assign hover event here 
                 currNode.dblclick((evt) => {
-
                     const getMonsterID = evt.target.id
                     this.player2.targetMonst = this.player1.monsterCards[getMonsterID]
-                    // much easier to do
                     $player2ReceivingCard.html(`
                         <p>${this.player2.targetMonst.name}</p>
                         <p>Attack Points: ${this.player2.targetMonst.atk}</p>
                         <p>${this.player2.targetMonst.desc}</p>
                     `)
-
                     alert(`Player 2 has chosen Player 1's ${this.player2.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
                     setTimeout(() => {
@@ -422,7 +395,7 @@ class GameState {
             victory.loop = true
             victory.volume = 0.5
             victory.play();
-            $displayPlayerTurn.html(`🎉 🎉 🎉  Player 1 has won! Player 2 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to continue playing! 🎉 🎉 🎉 `);
+            $displayPlayerTurn.html(`🎉 🎉 🎉  Player 1 has won! Player 2 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to play again! 🎉 🎉 🎉 `);
             setTimeout(() => {
                 location.reload();
             }, 50000)
@@ -437,7 +410,7 @@ class GameState {
             victory.loop = true
             victory.volume = 0.5
             victory.play();
-            $displayPlayerTurn.html(`🎉 🎉 🎉  Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to continue playing! 🎉 🎉 🎉 `);
+            $displayPlayerTurn.html(`🎉 🎉 🎉  Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to play again! 🎉 🎉 🎉 `);
             setTimeout(() => {
                 location.reload();
             }, 50000)
@@ -482,7 +455,7 @@ yugioh().then(
         })
 
         // ====== Global GameState ====== //
-        const game1 = new GameState(100)
+        const game1 = new GameState(5000)
         game1.getMonsterCardsImages();
         game1.displayAllCards();
         game1.beginAttackPhase();
