@@ -2,11 +2,6 @@
 CACHED DOM NOTES
 =========================*/
 
-/**
- * Change this text to display Player 1's turn or Player 2's turn
- */
-const $displayPlayerTurn = $('#player-turn')
-
 // * Reset Button * //
 const $resetBtn = $("#reset")
 $resetBtn.click(() => {
@@ -14,12 +9,13 @@ $resetBtn.click(() => {
 });
 
 // ====== Show/Hide Modal & Carousel ====== // 
+const $displayPlayerTurn = $('#player-turn')
 const $introModal = $('.instructions')
 const $duelBtn = $('.duel-btn')
 const $duelistCarousel = $('.duelist-carousel')
 const $selectDuelist = $('.select-duelist-btn')
 
-// ====== Game Container ====== // 
+    // ====== Game Container ====== // 
 const $gameContainer = $('.game-container')
 
 // ====== Player 1 DOM Elements ===== //
@@ -47,8 +43,7 @@ GLOBAL VARS
 // ======= Array of Monster Card Objects ======= // 
 const monsterList = []
 
-const mainTheme = new Audio("2-18 - Duel Island Theme.mp3");
-
+const mainTheme = new Audio("Duel Island Theme.mp3");
 
 /* =============================
 MAIN FUNCTIONS FOR then() 
@@ -61,6 +56,7 @@ const removeIntroShowCarousel = () => {
     $introModal.remove();
     $duelistCarousel.toggleClass("show");
     setTimeout(() => {
+        
         mainTheme.loop = true;
         mainTheme.volume = 0.5;
         mainTheme.play()
@@ -423,7 +419,7 @@ class GameState {
             🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
             mainTheme.pause();
             mainTheme.currentTime = 0;
-            const victory = new Audio("5-03 - Winning [Yuma] (ZEXAL).mp3");
+            const victory = new Audio("Winning.mp3");
             victory.loop = true
             victory.volume = 0.5
             victory.play();
@@ -438,7 +434,7 @@ class GameState {
             🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
             mainTheme.pause();
             mainTheme.currentTime = 0;
-            const victory = new Audio("5-03 - Winning [Yuma] (ZEXAL).mp3");
+            const victory = new Audio("Winning.mp3");
             victory.loop = true
             victory.volume = 0.5
             victory.play();
