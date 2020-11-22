@@ -10,15 +10,17 @@ $resetBtn.click(() => {
 
 // ====== Show/Hide Modal & Carousel ====== // 
 const $displayPlayerTurn = $('#player-turn')
-const $introModal = $('.instructions')
 const $duelBtn = $('.duel-btn')
-const $duelistCarousel = $('.duelist-carousel')
-const $selectDuelist = $('.select-duelist-btn')
+const $introModal = $('.instructions')
 
-    // ====== Game Container ====== // 
-const $gameContainer = $('.game-container')
+// ====== Game Container ====== // 
+const $gameContainer = $('.game-container') // same class applies to both Player 1 & 2 containers 
 
 // ====== Player 1 DOM Elements ===== //
+// const $player1DuelistCarousel = $('#player1-duelist-carousel')
+// const $player1SelectDuelist = $('#player1-select-duelist-btn')
+
+
 const $player1LifePoints = $('.player1-life-points')
 // not used 
 // const $player1MonsterCard = $('.player1-monster-card')
@@ -29,6 +31,9 @@ const $player1ConfirmAtkBtn = $('.player1-confirm-attack-btn')
 
 
 // ====== Player 2 DOM Elements ===== //
+// const $player2DuelistCarousel = $('#player2-duelist-carousel')
+// const $player2SelectDuelist = $('#player2-select-duelist-btn')
+
 const $player2LifePoints = $('.player2-life-points')
 // not used 
 // const $player2MonsterCard = $('.player2-monster-card')
@@ -42,7 +47,7 @@ GLOBAL VARS
 =========================*/
 // ======= Array of Monster Card Objects ======= // 
 const monsterList = []
-
+// ** needs to remain in global-scope; cause Audio object is paused later in code **
 const mainTheme = new Audio("Duel Island Theme.mp3");
 
 /* =============================
@@ -52,27 +57,21 @@ MAIN FUNCTIONS FOR then()
 /* =============================
 HELPER FUNCTIONS FOR DOM-MANIPULATION
 ============================= */
-const removeIntroShowCarousel = () => {
-    $introModal.remove();
-    $duelistCarousel.toggleClass("show");
+const removeInstructionsShowGameContainer = () => {
+    $introModal.remove(); // element removed
+    $gameContainer.toggleClass("show");
     setTimeout(() => {
-        
         mainTheme.loop = true;
         mainTheme.volume = 0.5;
         mainTheme.play()
     }, 500);
-}
-const removeDuelistCarouselshowGameContainer = () => {
-    $duelistCarousel.remove()
-    $gameContainer.toggleClass("show");
-    $displayPlayerTurn.html(`Player 1 begin your Attack Phase!`);
+    $displayPlayerTurn.html(`Player 1 please begin your Attack Phase!`);
 }
 
 /* =============================
 EVENT LISTENERS
 ============================= */
-$duelBtn.click(removeIntroShowCarousel);
-$selectDuelist.click(removeDuelistCarouselshowGameContainer)
+$duelBtn.click(removeInstructionsShowGameContainer);
 
 /* =============================
 GAMESTATE CLASS
@@ -157,7 +156,7 @@ class GameState {
                         <p>${this.player1.currAttkMonst.name}</p>
                         <p>Attack Points: ${this.player1.currAttkMonst.atk}</p>
                         <p>${this.player1.currAttkMonst.desc}</p>
-                    `) 
+                    `)
                     alert(`Player 1 has chosen ${this.player1.currAttkMonst.name} to attack with!`)
                     currNode.toggleClass('animate__animated animate__flash');
                     setTimeout(() => {
@@ -181,7 +180,7 @@ class GameState {
                         <p>${this.player1.targetMonst.name}</p>
                         <p>Attack Points: ${this.player1.targetMonst.atk}</p>
                         <p>${this.player1.targetMonst.desc}</p>
-                    `) 
+                    `)
 
                     alert(`Player 1 has chosen Player 2's ${this.player1.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
@@ -210,7 +209,7 @@ class GameState {
                         <p>${this.player2.currAttkMonst.name}</p>
                         <p>Attack Points: ${this.player2.currAttkMonst.atk}</p>
                         <p>${this.player2.currAttkMonst.desc}</p>
-                    `) 
+                    `)
 
                     alert(`Player 2 has chosen ${this.player2.currAttkMonst.name} to attack with!`)
                     currNode.toggleClass('animate__animated animate__flash');
@@ -235,8 +234,8 @@ class GameState {
                         <p>${this.player2.targetMonst.name}</p>
                         <p>Attack Points: ${this.player2.targetMonst.atk}</p>
                         <p>${this.player2.targetMonst.desc}</p>
-                    `) 
-                    
+                    `)
+
                     alert(`Player 2 has chosen Player 1's ${this.player2.targetMonst.name} to attack against!`)
                     currNode.toggleClass('animate__animated animate__rubberBand');
                     setTimeout(() => {
@@ -326,7 +325,7 @@ class GameState {
             this.player1.targetMonst = null;
             $player1AttackingCard.html(``)
             $player1ReceivingCard.html(``)
-            $displayPlayerTurn.html(`It is now Player 2's turn to begin their Attack Phase!`); 
+            $displayPlayerTurn.html(`It is now Player 2's turn to begin their Attack Phase!`);
             this.checkWinState();
         })
 
@@ -408,7 +407,7 @@ class GameState {
             this.player2.targetMonst = null;
             $player2AttackingCard.html(``)
             $player2ReceivingCard.html(``)
-            $displayPlayerTurn.html(`It is now Player 1's turn to begin their Attack Phase!`); 
+            $displayPlayerTurn.html(`It is now Player 1's turn to begin their Attack Phase!`);
             this.checkWinState();
         })
     }
@@ -427,7 +426,7 @@ class GameState {
             setTimeout(() => {
                 location.reload();
             }, 50000)
-            
+
         } else if (this.player1.lifePoints <= 0 && this.player2.lifePoints > 0) {
             alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉  
             Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing!
@@ -481,6 +480,7 @@ yugioh().then(
             }
             monsterList.push(monsterCardObj);
         })
+
         // ====== Global GameState ====== //
         const game1 = new GameState(100)
         game1.getMonsterCardsImages();

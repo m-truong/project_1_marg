@@ -39,48 +39,6 @@ div.jumbotron {
     animation-duration: 2s;
 }
 
-/* Duelist Carousel */
-div.duelist-carousel {
-    display: none;
-}
-
-div.duelist-carousel.show {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
-    background-color: rgb(243, 187, 66);
-    padding: 30px;
-    width: 50vw;
-    max-width: 500px;
-    text-align: center;
-    border-radius: 5px;
-    position: fixed;
-    top: 30%;
-    left: 40%;
-    /* transform: translateY(-45%); */
-
-    animation: slideInDown;
-    animation-duration: 2s;
-
-    background-color: rgb(243, 187, 66);
-    box-shadow: 0 4px 8px rgb(26, 31, 39);
-}
-
-/* Fixed Height Container */
-div.carousel-item {
-    height: 350px;
-}
-
-/* Duelists are Resized Correctly */
-/* Replace Yugi's Image */
-div.carousel-item>img {
-    width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-}
-
 /* Monster Card Container Styling */
 div.game-container {
     margin-top: 150px;
@@ -92,14 +50,7 @@ div.game-container.show {
     display: block;
 }
 
-div.monsterCardImg {
-    display: flex;
-    justify-content: center;
-
-}
-
 div.card {
     background-color: rgb(243, 187, 66);
     box-shadow: 0 4px 8px rgb(26, 31, 39);
-    /* transition: all 0.3s ease-in-out; */
 }
