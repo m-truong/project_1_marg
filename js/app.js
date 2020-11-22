@@ -144,10 +144,10 @@ class GameState {
                         <p>${this.player1.currAttkMonst.desc}</p>
                     `)
                     alert(`Player 1 has chosen ${this.player1.currAttkMonst.name} to attack with!`)
-                    currNode.toggleClass('animate__animated animate__flash');
+                    currNode.toggleClass('animate__animated animate__flash animate__slow');
                     setTimeout(() => {
-                        currNode.toggleClass('animate__animated animate__flash');
-                    }, 500);
+                        currNode.toggleClass('animate__animated animate__flash animate__slow');
+                    }, 3000);
                 });
             });
             this.player2.imgNodes.forEach((currNode) => {
@@ -165,10 +165,10 @@ class GameState {
                         <p>${this.player1.targetMonst.desc}</p>
                     `)
                     alert(`Player 1 has chosen Player 2's ${this.player1.targetMonst.name} to attack against!`)
-                    currNode.toggleClass('animate__animated animate__rubberBand');
+                    currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
                     setTimeout(() => {
-                        currNode.toggleClass('animate__animated animate__rubberBand');
-                    }, 500);
+                        currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
+                    }, 3000);
                 });
             });
         });
@@ -189,10 +189,10 @@ class GameState {
                         <p>${this.player2.currAttkMonst.desc}</p>
                     `)
                     alert(`Player 2 has chosen ${this.player2.currAttkMonst.name} to attack with!`)
-                    currNode.toggleClass('animate__animated animate__flash');
+                    currNode.toggleClass('animate__animated animate__flash animate__slow');
                     setTimeout(() => {
-                        currNode.toggleClass('animate__animated animate__flash');
-                    }, 500);
+                        currNode.toggleClass('animate__animated animate__flash animate__slow');
+                    }, 3000);
                 })
             });
             this.player1.imgNodes.forEach((currNode) => {
@@ -210,10 +210,10 @@ class GameState {
                         <p>${this.player2.targetMonst.desc}</p>
                     `)
                     alert(`Player 2 has chosen Player 1's ${this.player2.targetMonst.name} to attack against!`)
-                    currNode.toggleClass('animate__animated animate__rubberBand');
+                    currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
                     setTimeout(() => {
-                        currNode.toggleClass('animate__animated animate__rubberBand');
-                    }, 500);
+                        currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
+                    }, 3000);
                 });
             });
         });
@@ -235,10 +235,10 @@ class GameState {
                 const displayNode = this.player2.imgNodes[getIndex]
                 $(".player2-monster-cards").eq(getIndex).empty();
                 $(".player2-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__fadeOutDown');
+                displayNode.toggleClass('animate__animated animate__swing animate__slow'); 
                 setTimeout(() => {
-                    displayNode.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
 
             } else if ((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) < 0) {
                 alert(`After initiating the Attack Phase, Player 1's ${this.player1.currAttkMonst.name}'s Attack Points were less than Player 2's ${this.player1.targetMonst.name}'s Attack Points!`)
@@ -254,10 +254,10 @@ class GameState {
                 const displayNode = this.player1.imgNodes[getIndex]
                 $(".player1-monster-cards").eq(getIndex).empty();
                 $(".player1-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__fadeOutDown');
+                displayNode.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
-                    displayNode.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
             } else if (((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) === 0)) {
                 alert(`After initiating the Attack Phase, Player 1's Monster Card's Attack Points were equal to Player 2's Monster Card's Attack Points!`)
                 alert(`No damage was done to either players' Life Points, but both Monster Cards were sent to the Graveyard!`)
@@ -269,10 +269,10 @@ class GameState {
                 const displayEnemyNode = this.player2.imgNodes[getIndexTargetCard]
                 $(".player2-monster-cards").eq(getIndexTargetCard).empty()
                 $(".player2-monster-cards").eq(getIndexTargetCard).append(displayEnemyNode)
-                displayEnemyNode.toggleClass('animate__animated animate__fadeOutDown');
+                displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
-                    displayEnemyNode.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
                 const getIndexCurrAttkCard = this.player1.monsterCards.indexOf(this.player1.currAttkMonst);
                 const newCurrCard = this.getRandMonstCard(monsterList)
                 this.player1.monsterCards.splice(getIndexCurrAttkCard, 1, newCurrCard)
@@ -281,10 +281,10 @@ class GameState {
                 const displayCurrCard = this.player1.imgNodes[getIndexCurrAttkCard]
                 $(".player1-monster-cards").eq(getIndexCurrAttkCard).empty()
                 $(".player1-monster-cards").eq(getIndexCurrAttkCard).append(displayCurrCard)
-                displayCurrCard.toggleClass('animate__animated animate__fadeOutDown');
+                displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
-                    displayCurrCard.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
             }
             this.player1.imgNodes.forEach((currNode) => {
                 currNode.off("click");
@@ -317,10 +317,10 @@ class GameState {
                 const displayNode = this.player1.imgNodes[getIndex]
                 $(".player1-monster-cards").eq(getIndex).empty();
                 $(".player1-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__fadeOutDown');
+                displayNode.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
-                    displayNode.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
             } else if ((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) < 0) {
                 alert(`After initiating the Attack Phase, Player 2's ${this.player2.currAttkMonst.name}'s Attack Points were less than Player 1's ${this.player2.targetMonst.name}'s Attack Points!`)
                 this.player2.lifePoints += (this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)
@@ -335,10 +335,10 @@ class GameState {
                 const displayNode = this.player2.imgNodes[getIndex]
                 $(".player2-monster-cards").eq(getIndex).empty();
                 $(".player2-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__fadeOutDown');
+                displayNode.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
-                    displayNode.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
             } else if (((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) === 0)) {
                 alert(`After initiating the Attack Phase, Player 2's Monster Card's Attack Points were equal to Player 1's Monster Card's Attack Points!`)
                 alert(`No damage was done to either players' Life Points, but both Monster Cards were sent to the Graveyard!`)
@@ -350,10 +350,10 @@ class GameState {
                 const displayEnemyNode = this.player1.imgNodes[getIndexTargetCard]
                 $(".player1-monster-cards").eq(getIndexTargetCard).empty()
                 $(".player1-monster-cards").eq(getIndexTargetCard).append(displayEnemyNode)
-                displayEnemyNode.toggleClass('animate__animated animate__fadeOutDown');
+                displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
-                    displayEnemyNode.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
                 const getIndexCurrAttkCard = this.player2.monsterCards.indexOf(this.player2.currAttkMonst);
                 const newCurrCard = this.getRandMonstCard(monsterList)
                 this.player2.monsterCards.splice(getIndexCurrAttkCard, 1, newCurrCard)
@@ -362,10 +362,10 @@ class GameState {
                 const displayCurrCard = this.player2.imgNodes[getIndexCurrAttkCard]
                 $(".player2-monster-cards").eq(getIndexCurrAttkCard).empty()
                 $(".player2-monster-cards").eq(getIndexCurrAttkCard).append(displayCurrCard)
-                displayCurrCard.toggleClass('animate__animated animate__fadeOutDown');
+                displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
-                    displayCurrCard.toggleClass('animate__animated animate__fadeOutDown');
-                }, 500);
+                    displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
+                }, 3000);
             }
             this.player2.imgNodes.forEach((currNode) => {
                 currNode.off("click");
