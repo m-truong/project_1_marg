@@ -1,17 +1,32 @@
-* {
-    border: 1px solid black;
-}
-
 body {
     background: #444 url("duelistisland.jpg") fixed center no-repeat;
     background-size: cover;
     font-family: 'Fondamento', cursive;
-    /* font-family: 'Baloo Chettan 2', cursive; */
+}
+
+.instructions-font-size {
+    font-size: 18px;
+}
+
+.alt-font {
+    font-family: 'Baloo Chettan 2', cursive;
+}
+
+.left {
+    text-align: left;
+}
+
+.life-points-font-size {
+    font-size: 30px;
+}
+
+.card-font-size {
+    font-size: 18px;
 }
 
 div.heading {
     text-align: center;
-    color: white;
+    color: gold;
 }
 
 div.flex-container {
@@ -22,35 +37,37 @@ div.flex-container {
 
 div.jumbotron {
     width: 75%;
-    max-width: 700px;
-
+    max-width: 600px;
+    max-height: 600px;
+    overflow-y: auto;
     text-align: center;
-
     position: fixed;
-    /* previously 45% */
-    top: 15%;
-    /* transform: translateY(-45%); */
+    top: 25%;
     display: block;
     background-color: rgb(243, 187, 66);
     box-shadow: 0 4px 8px rgb(26, 31, 39);
-    transition: all 0.3s ease-in-out;
-
     animation: slideInDown;
     animation-duration: 2s;
+    border-radius: 15px;
 }
 
-/* Monster Card Container Styling */
 div.game-container {
-    margin-top: 150px;
+    margin-top: 50px;
     display: none;
-    /* margin: 260px 100px 0 100px; */
 }
 
 div.game-container.show {
     display: block;
 }
 
-div.card {
+div.card,
+button#reset {
     background-color: rgb(243, 187, 66);
     box-shadow: 0 4px 8px rgb(26, 31, 39);
+    border-radius: 15px;
+}
+
+div.player1-monster-cards,
+div.player2-monster-cards {
+    text-align: center;
 }

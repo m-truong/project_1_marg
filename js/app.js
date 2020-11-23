@@ -1,35 +1,22 @@
 /* ======================
 CACHED DOM NOTES
 =========================*/
-
-// * Reset Button * //
-const $resetBtn = $("#reset")
-$resetBtn.click(() => {
-    location.reload()
-});
-
-// ====== Show/Hide Modal & Carousel ====== // 
+// ====== Show/Hide Instructions & Game Container ====== // 
 const $displayPlayerTurn = $('#player-turn')
 const $duelBtn = $('#duel-btn')
 const $introModal = $('#instructions')
-
-// ====== Game Container ====== // 
-const $gameContainer = $('.game-container') // same class applies to both Player 1 & 2 containers 
+const $gameContainer = $('.game-container')
+const $resetBtn = $("#reset")
 
 // ====== Player 1 DOM Elements ===== //
 const $player1LifePoints = $('#player1-life-points')
-// not used 
-// const $player1MonsterCard = $('.player1-monster-card')
 const $player1AttackingCard = $('#player1-attacking-card')
 const $player1ReceivingCard = $('#player1-receiving-card')
 const $player1BeginAtkBtn = $('#player1-begin-attack-btn')
 const $player1ConfirmAtkBtn = $('#player1-confirm-attack-btn')
 
-
 // ====== Player 2 DOM Elements ===== //
 const $player2LifePoints = $('#player2-life-points')
-// not used 
-// const $player2MonsterCard = $('.player2-monster-card')
 const $player2AttackingCard = $('#player2-attacking-card')
 const $player2ReceivingCard = $('#player2-receiving-card')
 const $player2BeginAtkBtn = $('#player2-begin-attack-btn')
@@ -38,41 +25,42 @@ const $player2ConfirmAtkBtn = $('#player2-confirm-attack-btn')
 /* ======================
 GLOBAL VARS
 =========================*/
-// ======= Array of Monster Card Objects ======= // 
+// ====== Monster Card Array ====== // 
 const monsterList = []
-// ** needs to remain in global-scope; cause Audio object is paused later in code **
-const mainTheme = new Audio("Duel Island Theme.mp3");
+const mainTheme = new Audio("Duel Island Theme.mp3")
 
 /* =============================
-MAIN FUNCTIONS FOR then() 
+HELPER FUNCTION FOR EVENT
 ============================= */
-
-/* =============================
-HELPER FUNCTIONS FOR DOM-MANIPULATION
-============================= */
+/** 
+ * The removeInstructionsShowGameContainer() method removes the instructions modal, toggles the "show" CSS styling on the game container, plays the main battle theme,
+ * and then prompts Player 1 to begin their turn.  
+ */
 const removeInstructionsShowGameContainer = () => {
-    $introModal.remove(); // element removed
-    $gameContainer.toggleClass("show");
+    $introModal.remove();
+    $gameContainer.toggleClass("show")
     setTimeout(() => {
-        mainTheme.loop = true;
-        mainTheme.volume = 0.5;
+        mainTheme.loop = true
+        mainTheme.volume = 0.5
         mainTheme.play()
-    }, 500);
-    $displayPlayerTurn.html(`Player 1 please begin your Attack Phase!`);
+    }, 500)
+    $displayPlayerTurn.html(`Player 1 please begin your Attack Phase!`)
 }
 
 /* =============================
 EVENT LISTENERS
 ============================= */
-$duelBtn.click(removeInstructionsShowGameContainer);
+$duelBtn.click(removeInstructionsShowGameContainer)
+$resetBtn.click(() => {
+    location.reload()
+});
 
 /* =============================
 GAMESTATE CLASS
 ============================= */
-
 /**
- * The GameState class contains a player1 object property, player2 object property,
- * and two methods that are bound to object instances of the class to allow the click event-listeners to work.
+ * The GameState class contains a player1 and player2 object property. Both player objects have a lifePoints property, monsterCards array, 
+ * <img> elements array of the Monster Card images, a "current attacking" Monster Card, and "target" Monster Card property. 
  */
 class GameState {
     constructor(lifePoints = 2000) {
@@ -92,12 +80,24 @@ class GameState {
             targetMonst: null,
 
         }
-        this.getRandMonstCard = this.getRandMonstCard.bind(this);
     }
-    // ======= Get Random Monster Card ======= // 
+    /** 
+     * The updateLifePoints() method redisplays the player's life points after they have received damage. 
+     */
+    updateLifePoints(player, node) {
+        node.html(`${player.lifePoints}`);
+    }
+    /** 
+     * The getRandMonstCard() method returns a single random Monster Card object from the monster list array.
+     */
     getRandMonstCard(array) {
         return array[Math.floor(Math.random() * array.length)];
     }
+    /**
+     * The getMonsterCardsImages() method is called at the start of the duel and randomly draws five monster cards from the monster list array.
+     * The five monster cards are pushed into each players' monster cards array, and an <img> DOM element is created using jQuery for each monster card.
+     * The DOM elements are pushed into the imgNodes array for each player in the order that they are generated.
+     */
     getMonsterCardsImages() {
         for (let k = 0; k < 5; k++) {
             const currCard1 = this.getRandMonstCard(monsterList);
@@ -110,6 +110,10 @@ class GameState {
             this.player2.imgNodes.push(imgNode2);
         }
     }
+    /**
+     * The displayAllCards() method queries for the <div> elements in the DOM that will display the monster card images, and then it appends every monster card image. 
+     * This method also displays each players' life points at the start of the duel.
+     */
     displayAllCards() {
         const player1ImgNodes = $(".player1-monster-cards")
         for (let k = 0; k < 5; k++) {
@@ -126,6 +130,12 @@ class GameState {
         this.updateLifePoints(this.player1, $player1LifePoints);
         this.updateLifePoints(this.player2, $player2LifePoints);
     }
+    /**
+     * The beginAttackPhase() assigns a click event to both players' "Begin Attack Phase" button. When the player clicks their button, the method assigns a "hover" event 
+     * to each monster cards' image. It then assigns a click event to every monster card image which changes the "Player's Attacking Monster Card" to display the Monster Card's
+     * name, attack points, and card description. It also assigns a double-click event to the opponent's monster card images which will change the "Player's Receiving Monster Card"
+     * to display the opponent's monster card that has been targeted for the attack.
+     */
     beginAttackPhase() {
         $player1BeginAtkBtn.click((evt) => {
             alert("Player 1 has begun their attack phase!")
@@ -218,7 +228,12 @@ class GameState {
             });
         });
     }
-
+    /**
+     * The confirmAttackPhase() method assigns a click event to both players' "Confirm Attack Phase Button". When the player clicks their button, the method checks if the players' currently 
+     * selected attacking monster card's attack points are greater than, less than, or equal to the opponent's monster card that they chose to attack. Damage is done to either the current player's 
+     * or opponent player's life points, and the monster card that is sent to the graveyard is replaced with a new monster card. The method also checks for the game winning condition at the end 
+     * of the call.
+     */
     confirmAttackPhase() {
         $player1ConfirmAtkBtn.click((evt) => {
             if ((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) > 0) {
@@ -235,11 +250,10 @@ class GameState {
                 const displayNode = this.player2.imgNodes[getIndex]
                 $(".player2-monster-cards").eq(getIndex).empty();
                 $(".player2-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__swing animate__slow'); 
+                displayNode.toggleClass('animate__animated animate__swing animate__slow');
                 setTimeout(() => {
                     displayNode.toggleClass('animate__animated animate__swing animate__slow');
                 }, 3000);
-
             } else if ((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) < 0) {
                 alert(`After initiating the Attack Phase, Player 1's ${this.player1.currAttkMonst.name}'s Attack Points were less than Player 2's ${this.player1.targetMonst.name}'s Attack Points!`)
                 this.player1.lifePoints += (this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)
@@ -301,7 +315,6 @@ class GameState {
             $displayPlayerTurn.html(`It is now Player 2's turn to begin their Attack Phase!`);
             this.checkWinState();
         })
-
         $player2ConfirmAtkBtn.click((evt) => {
             if ((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) > 0) {
                 alert(`After initiating the Attack Phase, Player 2's ${this.player2.currAttkMonst.name}'s Attack Points are greater than Player 1's ${this.player2.targetMonst.name}'s Attack Points!`)
@@ -384,11 +397,12 @@ class GameState {
             this.checkWinState();
         })
     }
+    /**
+     * The checkWinState() method checks if either players' life points have reached zero, determines the winner, and plays the victory theme.
+     */
     checkWinState() {
         if (this.player1.lifePoints > 0 && this.player2.lifePoints <= 0) {
-            alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉
-            Player 1 has won! Player 2 has been defeated! Congratulations! Thank you for playing!
-            🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
+            alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 Player 1 has won! Player 2 has been defeated! Congratulations! Thank you for playing! 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
             mainTheme.pause();
             mainTheme.currentTime = 0;
             const victory = new Audio("Winning.mp3");
@@ -399,11 +413,8 @@ class GameState {
             setTimeout(() => {
                 location.reload();
             }, 50000)
-
         } else if (this.player1.lifePoints <= 0 && this.player2.lifePoints > 0) {
-            alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉  
-            Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing!
-            🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
+            alert(`🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing! 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉 🎉`);
             mainTheme.pause();
             mainTheme.currentTime = 0;
             const victory = new Audio("Winning.mp3");
@@ -416,17 +427,11 @@ class GameState {
             }, 50000)
         }
     }
-    // ======= Display Life Points ============= //
-    updateLifePoints(player, node) {
-        node.html(`${player.lifePoints}`);
-    }
 }
 
 /* =============================
 Yu-Gi-Oh API Database
 ============================= */
-
-// ====== Asynchronous Fetch API ======= // 
 let cardData
 const yugioh = async () => {
     try {
@@ -438,8 +443,7 @@ const yugioh = async () => {
         console.error(e);
     }
 }
-
-// ========== GAME ENTRYPOINT STARTS HERE ============= //
+// ========== GAME STARTS HERE ============= //
 yugioh().then(
     () => {
         cardData.forEach((currMonstCard) => {
@@ -453,9 +457,7 @@ yugioh().then(
             }
             monsterList.push(monsterCardObj);
         })
-
-        // ====== Global GameState ====== //
-        const game1 = new GameState(5000)
+        const game1 = new GameState(7000)
         game1.getMonsterCardsImages();
         game1.displayAllCards();
         game1.beginAttackPhase();
