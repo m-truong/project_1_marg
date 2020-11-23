@@ -457,7 +457,7 @@ yugioh().then(
             }
             monsterList.push(monsterCardObj);
         })
-        const game1 = new GameState(7000)
+        const game1 = new GameState(4000)
         game1.getMonsterCardsImages();
         game1.displayAllCards();
         game1.beginAttackPhase();
