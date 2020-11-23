@@ -57,9 +57,10 @@ yugioh().then(
 
 ### Technologies used:
 - External Yu-Gi-Oh API Database (https://db.ygoprodeck.com/api-guide/)
-- jQuery API library
-- Bootstrap CSS templating library
-- Animate.css custom library of CSS animations
+- jQuery API library (https://api.jquery.com/)
+- Bootstrap CSS templating library (https://getbootstrap.com/)
+- Animate.css custom library of CSS animations (https://animate.style/)
+- Yu-Gi-Oh! Duel Links Soundtrack (https://downloads.khinsider.com/game-soundtracks/album/yu-gi-oh-duel-links-soundtrack) 
 - JavaScript: string template literals, loops, event listeners, callback functions
 - CSS styling
 - HTML DOM-manipulation
@@ -85,14 +86,17 @@ ___
 - But for now, I'm still very happy that my card battle game turned out very well.
 
 ## Future Game Improvements:
-1. Implement a duelist carousel so that players can choose different characters to play as 
-2. Make the 'playable characters' appear on the game screen while dueling
-3. Make the character images flash red when they take damage to their life points
-4. Use an animated modal to display the winner instead of alerts
-5. Implement defensive gameplay 
-6. Allow the players to change the Monster Card to 'defense position' and use the Defense Points while dueling
-7. Add a 'Draw New Cards' button that draws five new random monster cards, so that a player has the option to get stronger Monster Cards
-7. Give the players an option to set the life points before a duel so that they can play longer matches
+1. Refactor my code to be more object-oriented 
+2. Use more JavaScript classes and separate game files
+3. Separate my GameState class into a Player class and Monster Card class
+4. Implement a duelist carousel so that players can choose different characters to play as 
+5. Make the 'playable characters' appear on the game screen while dueling
+6. Make the character images flash red when they take damage to their life points
+7. Use an animated modal to display the winner instead of alerts
+8. Implement defensive gameplay 
+9. Allow the players to change the Monster Card to 'defense position' and use the Defense Points while dueling
+10. Add a 'Draw New Cards' button that draws five new random monster cards, so that a player has the option to get stronger Monster Cards
+11. Give the players an option to set the life points before a duel so that they can play longer matches
 
 ## Credits: 
 - I want to thank Arthur for giving me a great explanation of how to fetch data from an external API. 
