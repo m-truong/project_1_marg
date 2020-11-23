@@ -89,14 +89,15 @@ ___
 1. Refactor my code to be more object-oriented 
 2. Use more JavaScript classes and separate game files
 3. Separate my GameState class into a Player class and Monster Card class
-4. Implement a duelist carousel so that players can choose different characters to play as 
-5. Make the 'playable characters' appear on the game screen while dueling
-6. Make the character images flash red when they take damage to their life points
-7. Use an animated modal to display the winner instead of alerts
-8. Implement defensive gameplay 
-9. Allow the players to change the Monster Card to 'defense position' and use the Defense Points while dueling
-10. Add a 'Draw New Cards' button that draws five new random monster cards, so that a player has the option to get stronger Monster Cards
-11. Give the players an option to set the life points before a duel so that they can play longer matches
+4. Refactor my large beginAttackPhase() and confirmAttackPhase() class methods into several helper methods
+5. Implement a duelist carousel so that players can choose different characters to play as 
+6. Make the 'playable characters' appear on the game screen while dueling
+7. Make the character images flash red when they take damage to their life points
+8. Use an animated modal to display the winner instead of alerts
+9. Implement defensive gameplay 
+10. Allow the players to change the Monster Card to 'defense position' and use the Defense Points while dueling
+11. Add a 'Draw New Cards' button that draws five new random monster cards, so that a player has the option to get stronger Monster Cards
+12. Give the players an option to set the life points before a duel so that they can play longer matches
 
 ## Credits: 
 - I want to thank Arthur for giving me a great explanation of how to fetch data from an external API. 
