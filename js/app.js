@@ -70,7 +70,7 @@ class GameState {
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
-
+            currTurn: true,
         }
         this.player2 = {
             lifePoints: lifePoints,
@@ -78,8 +78,10 @@ class GameState {
             imgNodes: [],
             currAttkMonst: null,
             targetMonst: null,
-
+            currTurn: false,
         }
+        this.beginAttackPhase = this.beginAttackPhase.bind(this)
+        this.confirmAttackPhase = this.confirmAttackPhase.bind(this)
     }
     /** 
      * The updateLifePoints() method redisplays the player's life points after they have received damage. 
@@ -137,96 +139,102 @@ class GameState {
      * to display the opponent's monster card that has been targeted for the attack.
      */
     beginAttackPhase() {
-        $player1BeginAtkBtn.click((evt) => {
-            alert("Player 1 has begun their attack phase!")
-            this.player1.imgNodes.forEach((currNode) => {
-                currNode.hover(() => {
-                    currNode.css('cursor', 'pointer')
-                }, () => {
-                    currNode.css('cursor', 'default')
-                })
-                currNode.click((evt) => {
-                    const getMonsterID = evt.target.id
-                    this.player1.currAttkMonst = this.player1.monsterCards[getMonsterID]
-                    $player1AttackingCard.html(`
+        if (this.player1.currTurn === true && this.player2.currTurn === false) {
+            $player1BeginAtkBtn.click((evt) => {
+                alert("Player 1 has begun their attack phase!")
+                this.player1.imgNodes.forEach((currNode) => {
+                    currNode.hover(() => {
+                        currNode.css('cursor', 'pointer')
+                    }, () => {
+                        currNode.css('cursor', 'default')
+                    })
+                    currNode.click((evt) => {
+                        const getMonsterID = evt.target.id
+                        this.player1.currAttkMonst = this.player1.monsterCards[getMonsterID]
+                        $player1AttackingCard.html(`
                         <p>${this.player1.currAttkMonst.name}</p>
                         <p>Attack Points: ${this.player1.currAttkMonst.atk}</p>
                         <p>${this.player1.currAttkMonst.desc}</p>
                     `)
-                    alert(`Player 1 has chosen ${this.player1.currAttkMonst.name} to attack with!`)
-                    currNode.toggleClass('animate__animated animate__flash animate__slow');
-                    setTimeout(() => {
+                        alert(`Player 1 has chosen ${this.player1.currAttkMonst.name} to attack with!`)
                         currNode.toggleClass('animate__animated animate__flash animate__slow');
-                    }, 3000);
+                        setTimeout(() => {
+                            currNode.toggleClass('animate__animated animate__flash animate__slow');
+                        }, 3000);
+                    });
                 });
-            });
-            this.player2.imgNodes.forEach((currNode) => {
-                currNode.hover(() => {
-                    currNode.css('cursor', 'pointer')
-                }, () => {
-                    currNode.css('cursor', 'default')
-                })
-                currNode.dblclick((evt) => {
-                    const getMonsterID = evt.target.id
-                    this.player1.targetMonst = this.player2.monsterCards[getMonsterID]
-                    $player1ReceivingCard.html(`
+                this.player2.imgNodes.forEach((currNode) => {
+                    currNode.hover(() => {
+                        currNode.css('cursor', 'pointer')
+                    }, () => {
+                        currNode.css('cursor', 'default')
+                    })
+                    currNode.dblclick((evt) => {
+                        const getMonsterID = evt.target.id
+                        this.player1.targetMonst = this.player2.monsterCards[getMonsterID]
+                        $player1ReceivingCard.html(`
                         <p>${this.player1.targetMonst.name}</p>
                         <p>Attack Points: ${this.player1.targetMonst.atk}</p>
                         <p>${this.player1.targetMonst.desc}</p>
                     `)
-                    alert(`Player 1 has chosen Player 2's ${this.player1.targetMonst.name} to attack against!`)
-                    currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
-                    setTimeout(() => {
+                        alert(`Player 1 has chosen Player 2's ${this.player1.targetMonst.name} to attack against!`)
                         currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
-                    }, 3000);
+                        setTimeout(() => {
+                            currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
+                        }, 3000);
+                    });
                 });
+                this.confirmAttackPhase()
             });
-        });
-        $player2BeginAtkBtn.click((evt) => {
-            alert("Player 2 has begun their attack phase!")
-            this.player2.imgNodes.forEach((currNode) => {
-                currNode.hover(() => {
-                    currNode.css('cursor', 'pointer')
-                }, () => {
-                    currNode.css('cursor', 'default')
-                })
-                currNode.click((evt) => {
-                    const getMonsterID = evt.target.id
-                    this.player2.currAttkMonst = this.player2.monsterCards[getMonsterID]
-                    $player2AttackingCard.html(`
+        }
+        if (this.player2.currTurn === true && this.player1.currTurn === false) {
+            $player2BeginAtkBtn.click((evt) => {
+                alert("Player 2 has begun their attack phase!")
+                this.player2.imgNodes.forEach((currNode) => {
+                    currNode.hover(() => {
+                        currNode.css('cursor', 'pointer')
+                    }, () => {
+                        currNode.css('cursor', 'default')
+                    })
+                    currNode.click((evt) => {
+                        const getMonsterID = evt.target.id
+                        this.player2.currAttkMonst = this.player2.monsterCards[getMonsterID]
+                        $player2AttackingCard.html(`
                         <p>${this.player2.currAttkMonst.name}</p>
                         <p>Attack Points: ${this.player2.currAttkMonst.atk}</p>
                         <p>${this.player2.currAttkMonst.desc}</p>
                     `)
-                    alert(`Player 2 has chosen ${this.player2.currAttkMonst.name} to attack with!`)
-                    currNode.toggleClass('animate__animated animate__flash animate__slow');
-                    setTimeout(() => {
+                        alert(`Player 2 has chosen ${this.player2.currAttkMonst.name} to attack with!`)
                         currNode.toggleClass('animate__animated animate__flash animate__slow');
-                    }, 3000);
-                })
-            });
-            this.player1.imgNodes.forEach((currNode) => {
-                currNode.hover(() => {
-                    currNode.css('cursor', 'pointer')
-                }, () => {
-                    currNode.css('cursor', 'default')
-                })
-                currNode.dblclick((evt) => {
-                    const getMonsterID = evt.target.id
-                    this.player2.targetMonst = this.player1.monsterCards[getMonsterID]
-                    $player2ReceivingCard.html(`
+                        setTimeout(() => {
+                            currNode.toggleClass('animate__animated animate__flash animate__slow');
+                        }, 3000);
+                    })
+                });
+                this.player1.imgNodes.forEach((currNode) => {
+                    currNode.hover(() => {
+                        currNode.css('cursor', 'pointer')
+                    }, () => {
+                        currNode.css('cursor', 'default')
+                    })
+                    currNode.dblclick((evt) => {
+                        const getMonsterID = evt.target.id
+                        this.player2.targetMonst = this.player1.monsterCards[getMonsterID]
+                        $player2ReceivingCard.html(`
                         <p>${this.player2.targetMonst.name}</p>
                         <p>Attack Points: ${this.player2.targetMonst.atk}</p>
                         <p>${this.player2.targetMonst.desc}</p>
                     `)
-                    alert(`Player 2 has chosen Player 1's ${this.player2.targetMonst.name} to attack against!`)
-                    currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
-                    setTimeout(() => {
+                        alert(`Player 2 has chosen Player 1's ${this.player2.targetMonst.name} to attack against!`)
                         currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
-                    }, 3000);
+                        setTimeout(() => {
+                            currNode.toggleClass('animate__animated animate__rubberBand animate__slow');
+                        }, 3000);
+                    });
                 });
+                this.confirmAttackPhase()
             });
-        });
+        }
     }
     /**
      * The confirmAttackPhase() method assigns a click event to both players' "Confirm Attack Phase Button". When the player clicks their button, the method checks if the players' currently 
@@ -235,167 +243,178 @@ class GameState {
      * of the call.
      */
     confirmAttackPhase() {
-        $player1ConfirmAtkBtn.click((evt) => {
-            if ((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) > 0) {
-                alert(`After initiating the Attack Phase, Player 1's ${this.player1.currAttkMonst.name}'s Attack Points are greater than Player 2's ${this.player1.targetMonst.name}'s Attack Points!`)
-                this.player2.lifePoints -= (this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)
-                this.updateLifePoints(this.player2, $player2LifePoints);
-                alert(`The attack did ${(this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)} damage to Player 2's Life Points!`);
-                alert(`${this.player1.targetMonst.name} has been sent to the Graveyard!`);
-                const getIndex = this.player2.monsterCards.indexOf(this.player1.targetMonst);
-                const newCard = this.getRandMonstCard(monsterList)
-                this.player2.monsterCards.splice(getIndex, 1, newCard);
-                const newNode = $(`<img id="${getIndex}" class="player2-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
-                this.player2.imgNodes.splice(getIndex, 1, newNode);
-                const displayNode = this.player2.imgNodes[getIndex]
-                $(".player2-monster-cards").eq(getIndex).empty();
-                $(".player2-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+        if (this.player1.currTurn === true && this.player2.currTurn === false) {
+            $player1ConfirmAtkBtn.click((evt) => {
+                if ((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) > 0) {
+                    alert(`After initiating the Attack Phase, Player 1's ${this.player1.currAttkMonst.name}'s Attack Points are greater than Player 2's ${this.player1.targetMonst.name}'s Attack Points!`)
+                    this.player2.lifePoints -= (this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)
+                    this.updateLifePoints(this.player2, $player2LifePoints);
+                    alert(`The attack did ${(this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)} damage to Player 2's Life Points!`);
+                    alert(`${this.player1.targetMonst.name} has been sent to the Graveyard!`);
+                    const getIndex = this.player2.monsterCards.indexOf(this.player1.targetMonst);
+                    const newCard = this.getRandMonstCard(monsterList)
+                    this.player2.monsterCards.splice(getIndex, 1, newCard);
+                    const newNode = $(`<img id="${getIndex}" class="player2-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
+                    this.player2.imgNodes.splice(getIndex, 1, newNode);
+                    const displayNode = this.player2.imgNodes[getIndex]
+                    $(".player2-monster-cards").eq(getIndex).empty();
+                    $(".player2-monster-cards").eq(getIndex).append(displayNode);
                     displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-            } else if ((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) < 0) {
-                alert(`After initiating the Attack Phase, Player 1's ${this.player1.currAttkMonst.name}'s Attack Points were less than Player 2's ${this.player1.targetMonst.name}'s Attack Points!`)
-                this.player1.lifePoints += (this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)
-                this.updateLifePoints(this.player1, $player1LifePoints);
-                alert(`The attack did ${-(this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)} damage back to Player 1's Life Points!`);
-                alert(`${this.player1.currAttkMonst.name} has been sent to the Graveyard!`);
-                const getIndex = this.player1.monsterCards.indexOf(this.player1.currAttkMonst);
-                const newCard = this.getRandMonstCard(monsterList)
-                this.player1.monsterCards.splice(getIndex, 1, newCard);
-                const newNode = $(`<img id="${getIndex}" class="player1-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
-                this.player1.imgNodes.splice(getIndex, 1, newNode);
-                const displayNode = this.player1.imgNodes[getIndex]
-                $(".player1-monster-cards").eq(getIndex).empty();
-                $(".player1-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+                    setTimeout(() => {
+                        displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                } else if ((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) < 0) {
+                    alert(`After initiating the Attack Phase, Player 1's ${this.player1.currAttkMonst.name}'s Attack Points were less than Player 2's ${this.player1.targetMonst.name}'s Attack Points!`)
+                    this.player1.lifePoints += (this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)
+                    this.updateLifePoints(this.player1, $player1LifePoints);
+                    alert(`The attack did ${-(this.player1.currAttkMonst.atk - this.player1.targetMonst.atk)} damage back to Player 1's Life Points!`);
+                    alert(`${this.player1.currAttkMonst.name} has been sent to the Graveyard!`);
+                    const getIndex = this.player1.monsterCards.indexOf(this.player1.currAttkMonst);
+                    const newCard = this.getRandMonstCard(monsterList)
+                    this.player1.monsterCards.splice(getIndex, 1, newCard);
+                    const newNode = $(`<img id="${getIndex}" class="player1-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
+                    this.player1.imgNodes.splice(getIndex, 1, newNode);
+                    const displayNode = this.player1.imgNodes[getIndex]
+                    $(".player1-monster-cards").eq(getIndex).empty();
+                    $(".player1-monster-cards").eq(getIndex).append(displayNode);
                     displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-            } else if (((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) === 0)) {
-                alert(`After initiating the Attack Phase, Player 1's Monster Card's Attack Points were equal to Player 2's Monster Card's Attack Points!`)
-                alert(`No damage was done to either players' Life Points, but both Monster Cards were sent to the Graveyard!`)
-                const getIndexTargetCard = this.player2.monsterCards.indexOf(this.player1.targetMonst);
-                const newEnemyCard = this.getRandMonstCard(monsterList)
-                this.player2.monsterCards.splice(getIndexTargetCard, 1, newEnemyCard)
-                const newEnemyNode = $(`<img id="${getIndexTargetCard}" class="player2-monster-card${getIndexTargetCard}" src="${newEnemyCard.cardImg}" alt="${newEnemyCard.name}">`)
-                this.player2.imgNodes.splice(getIndexTargetCard, 1, newEnemyNode)
-                const displayEnemyNode = this.player2.imgNodes[getIndexTargetCard]
-                $(".player2-monster-cards").eq(getIndexTargetCard).empty()
-                $(".player2-monster-cards").eq(getIndexTargetCard).append(displayEnemyNode)
-                displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+                    setTimeout(() => {
+                        displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                } else if (((this.player1.currAttkMonst.atk - this.player1.targetMonst.atk) === 0)) {
+                    alert(`After initiating the Attack Phase, Player 1's Monster Card's Attack Points were equal to Player 2's Monster Card's Attack Points!`)
+                    alert(`No damage was done to either players' Life Points, but both Monster Cards were sent to the Graveyard!`)
+                    const getIndexTargetCard = this.player2.monsterCards.indexOf(this.player1.targetMonst);
+                    const newEnemyCard = this.getRandMonstCard(monsterList)
+                    this.player2.monsterCards.splice(getIndexTargetCard, 1, newEnemyCard)
+                    const newEnemyNode = $(`<img id="${getIndexTargetCard}" class="player2-monster-card${getIndexTargetCard}" src="${newEnemyCard.cardImg}" alt="${newEnemyCard.name}">`)
+                    this.player2.imgNodes.splice(getIndexTargetCard, 1, newEnemyNode)
+                    const displayEnemyNode = this.player2.imgNodes[getIndexTargetCard]
+                    $(".player2-monster-cards").eq(getIndexTargetCard).empty()
+                    $(".player2-monster-cards").eq(getIndexTargetCard).append(displayEnemyNode)
                     displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-                const getIndexCurrAttkCard = this.player1.monsterCards.indexOf(this.player1.currAttkMonst);
-                const newCurrCard = this.getRandMonstCard(monsterList)
-                this.player1.monsterCards.splice(getIndexCurrAttkCard, 1, newCurrCard)
-                const newCurrNode = $(`<img id="${getIndexCurrAttkCard}" class="player1-monster-card${getIndexCurrAttkCard}" src="${newCurrCard.cardImg}" alt="${newCurrCard.name}">`)
-                this.player1.imgNodes.splice(getIndexCurrAttkCard, 1, newCurrNode)
-                const displayCurrCard = this.player1.imgNodes[getIndexCurrAttkCard]
-                $(".player1-monster-cards").eq(getIndexCurrAttkCard).empty()
-                $(".player1-monster-cards").eq(getIndexCurrAttkCard).append(displayCurrCard)
-                displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+                    setTimeout(() => {
+                        displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                    const getIndexCurrAttkCard = this.player1.monsterCards.indexOf(this.player1.currAttkMonst);
+                    const newCurrCard = this.getRandMonstCard(monsterList)
+                    this.player1.monsterCards.splice(getIndexCurrAttkCard, 1, newCurrCard)
+                    const newCurrNode = $(`<img id="${getIndexCurrAttkCard}" class="player1-monster-card${getIndexCurrAttkCard}" src="${newCurrCard.cardImg}" alt="${newCurrCard.name}">`)
+                    this.player1.imgNodes.splice(getIndexCurrAttkCard, 1, newCurrNode)
+                    const displayCurrCard = this.player1.imgNodes[getIndexCurrAttkCard]
+                    $(".player1-monster-cards").eq(getIndexCurrAttkCard).empty()
+                    $(".player1-monster-cards").eq(getIndexCurrAttkCard).append(displayCurrCard)
                     displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-            }
-            this.player1.imgNodes.forEach((currNode) => {
-                currNode.off("click");
-                currNode.off("mouseenter mouseleave");
+                    setTimeout(() => {
+                        displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                }
+                this.player1.imgNodes.forEach((currNode) => {
+                    currNode.off("click");
+                    currNode.off("mouseenter mouseleave");
+                })
+                this.player2.imgNodes.forEach((currNode) => {
+                    currNode.off("dblclick");
+                    currNode.off("mouseenter mouseleave");
+                })
+                this.player1.currAttkMonst = null;
+                this.player1.targetMonst = null;
+                $player1AttackingCard.html(``)
+                $player1ReceivingCard.html(``)
+                $displayPlayerTurn.html(`It is now Player 2's turn to begin their Attack Phase!`);
+                this.player1.currTurn = false
+                this.player2.currTurn = true
+                $player1BeginAtkBtn.off("click")
+                this.beginAttackPhase()
+                this.checkWinState()
             })
-            this.player2.imgNodes.forEach((currNode) => {
-                currNode.off("dblclick");
-                currNode.off("mouseenter mouseleave");
-            })
-            this.player1.currAttkMonst = null;
-            this.player1.targetMonst = null;
-            $player1AttackingCard.html(``)
-            $player1ReceivingCard.html(``)
-            $displayPlayerTurn.html(`It is now Player 2's turn to begin their Attack Phase!`);
-            this.checkWinState();
-        })
-        $player2ConfirmAtkBtn.click((evt) => {
-            if ((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) > 0) {
-                alert(`After initiating the Attack Phase, Player 2's ${this.player2.currAttkMonst.name}'s Attack Points are greater than Player 1's ${this.player2.targetMonst.name}'s Attack Points!`)
-                this.player1.lifePoints -= (this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)
-                this.updateLifePoints(this.player1, $player1LifePoints);
-                alert(`The attack did ${(this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)} damage to Player 1's Life Points!`);
-                alert(`${this.player2.targetMonst.name} has been sent to the Graveyard!`);
-                const getIndex = this.player1.monsterCards.indexOf(this.player2.targetMonst);
-                const newCard = this.getRandMonstCard(monsterList)
-                this.player1.monsterCards.splice(getIndex, 1, newCard);
-                const newNode = $(`<img id="${getIndex}" class="player1-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
-                this.player1.imgNodes.splice(getIndex, 1, newNode);
-                const displayNode = this.player1.imgNodes[getIndex]
-                $(".player1-monster-cards").eq(getIndex).empty();
-                $(".player1-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+        }
+        if (this.player2.currTurn === true && this.player1.currTurn === false) {
+            $player2ConfirmAtkBtn.click((evt) => {
+                if ((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) > 0) {
+                    alert(`After initiating the Attack Phase, Player 2's ${this.player2.currAttkMonst.name}'s Attack Points are greater than Player 1's ${this.player2.targetMonst.name}'s Attack Points!`)
+                    this.player1.lifePoints -= (this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)
+                    this.updateLifePoints(this.player1, $player1LifePoints);
+                    alert(`The attack did ${(this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)} damage to Player 1's Life Points!`);
+                    alert(`${this.player2.targetMonst.name} has been sent to the Graveyard!`);
+                    const getIndex = this.player1.monsterCards.indexOf(this.player2.targetMonst);
+                    const newCard = this.getRandMonstCard(monsterList)
+                    this.player1.monsterCards.splice(getIndex, 1, newCard);
+                    const newNode = $(`<img id="${getIndex}" class="player1-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
+                    this.player1.imgNodes.splice(getIndex, 1, newNode);
+                    const displayNode = this.player1.imgNodes[getIndex]
+                    $(".player1-monster-cards").eq(getIndex).empty();
+                    $(".player1-monster-cards").eq(getIndex).append(displayNode);
                     displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-            } else if ((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) < 0) {
-                alert(`After initiating the Attack Phase, Player 2's ${this.player2.currAttkMonst.name}'s Attack Points were less than Player 1's ${this.player2.targetMonst.name}'s Attack Points!`)
-                this.player2.lifePoints += (this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)
-                this.updateLifePoints(this.player2, $player2LifePoints);
-                alert(`The attack did ${-(this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)} damage back to Player 2's Life Points!`);
-                alert(`${this.player2.currAttkMonst.name} has been sent to the Graveyard!`);
-                const getIndex = this.player2.monsterCards.indexOf(this.player2.currAttkMonst);
-                const newCard = this.getRandMonstCard(monsterList)
-                this.player2.monsterCards.splice(getIndex, 1, newCard);
-                const newNode = $(`<img id="${getIndex}" class="player2-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
-                this.player2.imgNodes.splice(getIndex, 1, newNode);
-                const displayNode = this.player2.imgNodes[getIndex]
-                $(".player2-monster-cards").eq(getIndex).empty();
-                $(".player2-monster-cards").eq(getIndex).append(displayNode);
-                displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+                    setTimeout(() => {
+                        displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                } else if ((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) < 0) {
+                    alert(`After initiating the Attack Phase, Player 2's ${this.player2.currAttkMonst.name}'s Attack Points were less than Player 1's ${this.player2.targetMonst.name}'s Attack Points!`)
+                    this.player2.lifePoints += (this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)
+                    this.updateLifePoints(this.player2, $player2LifePoints);
+                    alert(`The attack did ${-(this.player2.currAttkMonst.atk - this.player2.targetMonst.atk)} damage back to Player 2's Life Points!`);
+                    alert(`${this.player2.currAttkMonst.name} has been sent to the Graveyard!`);
+                    const getIndex = this.player2.monsterCards.indexOf(this.player2.currAttkMonst);
+                    const newCard = this.getRandMonstCard(monsterList)
+                    this.player2.monsterCards.splice(getIndex, 1, newCard);
+                    const newNode = $(`<img id="${getIndex}" class="player2-monster-card${getIndex}" src="${newCard.cardImg}" alt="${newCard.name}">`)
+                    this.player2.imgNodes.splice(getIndex, 1, newNode);
+                    const displayNode = this.player2.imgNodes[getIndex]
+                    $(".player2-monster-cards").eq(getIndex).empty();
+                    $(".player2-monster-cards").eq(getIndex).append(displayNode);
                     displayNode.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-            } else if (((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) === 0)) {
-                alert(`After initiating the Attack Phase, Player 2's Monster Card's Attack Points were equal to Player 1's Monster Card's Attack Points!`)
-                alert(`No damage was done to either players' Life Points, but both Monster Cards were sent to the Graveyard!`)
-                const getIndexTargetCard = this.player1.monsterCards.indexOf(this.player2.targetMonst);
-                const newEnemyCard = this.getRandMonstCard(monsterList)
-                this.player1.monsterCards.splice(getIndexTargetCard, 1, newEnemyCard)
-                const newEnemyNode = $(`<img id="${getIndexTargetCard}" class="player1-monster-card${getIndexTargetCard}" src="${newEnemyCard.cardImg}" alt="${newEnemyCard.name}">`)
-                this.player1.imgNodes.splice(getIndexTargetCard, 1, newEnemyNode)
-                const displayEnemyNode = this.player1.imgNodes[getIndexTargetCard]
-                $(".player1-monster-cards").eq(getIndexTargetCard).empty()
-                $(".player1-monster-cards").eq(getIndexTargetCard).append(displayEnemyNode)
-                displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+                    setTimeout(() => {
+                        displayNode.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                } else if (((this.player2.currAttkMonst.atk - this.player2.targetMonst.atk) === 0)) {
+                    alert(`After initiating the Attack Phase, Player 2's Monster Card's Attack Points were equal to Player 1's Monster Card's Attack Points!`)
+                    alert(`No damage was done to either players' Life Points, but both Monster Cards were sent to the Graveyard!`)
+                    const getIndexTargetCard = this.player1.monsterCards.indexOf(this.player2.targetMonst);
+                    const newEnemyCard = this.getRandMonstCard(monsterList)
+                    this.player1.monsterCards.splice(getIndexTargetCard, 1, newEnemyCard)
+                    const newEnemyNode = $(`<img id="${getIndexTargetCard}" class="player1-monster-card${getIndexTargetCard}" src="${newEnemyCard.cardImg}" alt="${newEnemyCard.name}">`)
+                    this.player1.imgNodes.splice(getIndexTargetCard, 1, newEnemyNode)
+                    const displayEnemyNode = this.player1.imgNodes[getIndexTargetCard]
+                    $(".player1-monster-cards").eq(getIndexTargetCard).empty()
+                    $(".player1-monster-cards").eq(getIndexTargetCard).append(displayEnemyNode)
                     displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-                const getIndexCurrAttkCard = this.player2.monsterCards.indexOf(this.player2.currAttkMonst);
-                const newCurrCard = this.getRandMonstCard(monsterList)
-                this.player2.monsterCards.splice(getIndexCurrAttkCard, 1, newCurrCard)
-                const newCurrNode = $(`<img id="${getIndexCurrAttkCard}" class="player2-monster-card${getIndexCurrAttkCard}" src="${newCurrCard.cardImg}" alt="${newCurrCard.name}">`)
-                this.player2.imgNodes.splice(getIndexCurrAttkCard, 1, newCurrNode)
-                const displayCurrCard = this.player2.imgNodes[getIndexCurrAttkCard]
-                $(".player2-monster-cards").eq(getIndexCurrAttkCard).empty()
-                $(".player2-monster-cards").eq(getIndexCurrAttkCard).append(displayCurrCard)
-                displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
-                setTimeout(() => {
+                    setTimeout(() => {
+                        displayEnemyNode.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                    const getIndexCurrAttkCard = this.player2.monsterCards.indexOf(this.player2.currAttkMonst);
+                    const newCurrCard = this.getRandMonstCard(monsterList)
+                    this.player2.monsterCards.splice(getIndexCurrAttkCard, 1, newCurrCard)
+                    const newCurrNode = $(`<img id="${getIndexCurrAttkCard}" class="player2-monster-card${getIndexCurrAttkCard}" src="${newCurrCard.cardImg}" alt="${newCurrCard.name}">`)
+                    this.player2.imgNodes.splice(getIndexCurrAttkCard, 1, newCurrNode)
+                    const displayCurrCard = this.player2.imgNodes[getIndexCurrAttkCard]
+                    $(".player2-monster-cards").eq(getIndexCurrAttkCard).empty()
+                    $(".player2-monster-cards").eq(getIndexCurrAttkCard).append(displayCurrCard)
                     displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
-                }, 3000);
-            }
-            this.player2.imgNodes.forEach((currNode) => {
-                currNode.off("click");
-                currNode.off("mouseenter mouseleave")
+                    setTimeout(() => {
+                        displayCurrCard.toggleClass('animate__animated animate__swing animate__slow');
+                    }, 3000);
+                }
+                this.player2.imgNodes.forEach((currNode) => {
+                    currNode.off("click");
+                    currNode.off("mouseenter mouseleave")
+                })
+                this.player1.imgNodes.forEach((currNode) => {
+                    currNode.off("dblclick");
+                    currNode.off("mouseenter mouseleave")
+                })
+                this.player2.currAttkMonst = null;
+                this.player2.targetMonst = null;
+                $player2AttackingCard.html(``)
+                $player2ReceivingCard.html(``)
+                $displayPlayerTurn.html(`It is now Player 1's turn to begin their Attack Phase!`);
+                this.player1.currTurn = true
+                this.player2.currTurn = false
+                $player2BeginAtkBtn.off("click")
+                this.beginAttackPhase()
+                this.checkWinState();
             })
-            this.player1.imgNodes.forEach((currNode) => {
-                currNode.off("dblclick");
-                currNode.off("mouseenter mouseleave")
-
-            })
-            this.player2.currAttkMonst = null;
-            this.player2.targetMonst = null;
-            $player2AttackingCard.html(``)
-            $player2ReceivingCard.html(``)
-            $displayPlayerTurn.html(`It is now Player 1's turn to begin their Attack Phase!`);
-            this.checkWinState();
-        })
+        }
     }
     /**
      * The checkWinState() method checks if either players' life points have reached zero, determines the winner, and plays the victory theme.
@@ -410,6 +429,8 @@ class GameState {
             victory.volume = 0.5
             victory.play();
             $displayPlayerTurn.html(`🎉 🎉 🎉  Player 1 has won! Player 2 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to play again! 🎉 🎉 🎉 `);
+            $player1BeginAtkBtn.off("click");
+            $player2BeginAtkBtn.off("click");
             setTimeout(() => {
                 location.reload();
             }, 50000)
@@ -422,6 +443,8 @@ class GameState {
             victory.volume = 0.5
             victory.play();
             $displayPlayerTurn.html(`🎉 🎉 🎉  Player 2 has won! Player 1 has been defeated! Congratulations! Thank you for playing! Please click Restart Game to play again! 🎉 🎉 🎉 `);
+            $player1BeginAtkBtn.off("click");
+            $player2BeginAtkBtn.off("click");
             setTimeout(() => {
                 location.reload();
             }, 50000)
@@ -460,7 +483,6 @@ yugioh().then(
         const game1 = new GameState(4000)
         game1.getMonsterCardsImages();
         game1.displayAllCards();
-        game1.beginAttackPhase();
-        game1.confirmAttackPhase();
+        game1.beginAttackPhase()
     }
 );
